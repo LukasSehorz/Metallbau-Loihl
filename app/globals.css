@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #0a0a0a;
+    color: #ffffff;
+  }
+
+  ::selection {
+    background-color: #1fa9d9;
+    color: #ffffff;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-plasma text-white font-semibold px-6 py-3 text-sm tracking-wide hover:bg-plasma/90 transition-colors;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center border border-off-white/30 text-off-white font-semibold px-6 py-3 text-sm tracking-wide hover:border-off-white/60 transition-colors;
+  }
+
+  .btn-ghost-dark {
+    @apply inline-flex items-center justify-center border border-carbon/30 text-carbon font-semibold px-6 py-3 text-sm tracking-wide hover:border-carbon/60 transition-colors;
+  }
+
+  .placeholder-img {
+    @apply bg-card-dark border border-gray-mid/20 flex items-center justify-center;
+  }
+
+  .placeholder-img-light {
+    @apply bg-gray-200 border border-gray-300 flex items-center justify-center;
+  }
+}
