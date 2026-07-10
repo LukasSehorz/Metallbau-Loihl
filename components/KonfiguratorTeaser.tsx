@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import type { ShowroomConfig } from "./ShowroomViewer";
 
 const ShowroomViewer = dynamic(() => import("./ShowroomViewer"), {
   ssr: false,
@@ -166,19 +167,20 @@ export default function KonfiguratorTeaser() {
     if (p === null) setSheet(false);
   }
 
-  // Statische 3D-Vorschau: immer dasselbe Beispielmodell, unabhängig von der
-  // gewählten Konfiguration (individuelle Visualisierung nur gegen Aufpreis).
-  const config = useMemo(
+  // Live-3D-Vorschau: das parametrische Modell folgt der Konfiguration
+  // (Tischgröße, Serie, Füße/Rollen, Abdeckblech).
+  const config = useMemo<ShowroomConfig>(
     () => ({
-      width:       1000,
-      length:      1000,
-      thickness:   200,
+      width:       size.width,
+      length:      size.length,
+      series:      series.value,
+      feet:        feetIdx === 1 ? "casters" : "fixed",
+      sheet:       sheet && sheetAvailable,
       metalness:   0.85,
-      roughness:   0.25,
-      holeSystem:  "D26", // Visualisierungsmodell — Produkt: Ø 28 mm, Raster 100×100 mm
+      roughness:   0.3,
       accentColor: "#909090",
     }),
-    []
+    [size, series, feetIdx, sheet, sheetAvailable]
   );
 
   // Stückliste (nur gewählte Positionen)
@@ -404,7 +406,7 @@ export default function KonfiguratorTeaser() {
             <ShowroomViewer config={config} />
           </div>
           <p className="text-carbon/60 text-xs text-center font-mono">
-            3D-Ansicht: Beispielmodell — Ihre Maße &amp; Ausstattung werden im Angebot berücksichtigt
+            3D-Ansicht: Live-Vorschau — Größe, Füße/Rollen &amp; Abdeckblech folgen Ihrer Auswahl (vereinfachte Darstellung)
           </p>
 
           {/* Stückliste */}

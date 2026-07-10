@@ -9,7 +9,7 @@ import Link from "next/link";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-type PRow = { a: string; b: string; netto: string; brutto: string };
+type PRow = { a: string; b: string; netto: string; brutto: string; img?: string };
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
@@ -107,10 +107,10 @@ const SCHRAUBZWINGE_ROWS: PRow[] = [
 ];
 
 const ANSCHLAG_ROWS: PRow[] = [
-  { a: "150×50 mm",                      b: "AS150.050", netto: "25,00 €", brutto: "29,75 €" },
-  { a: "150×50 mm Langloch",             b: "AL150.050", netto: "26,00 €", brutto: "30,94 €" },
-  { a: "300×50 mm Langloch + Loch",      b: "AS300.050", netto: "29,00 €", brutto: "34,51 €" },
-  { a: "300×50 mm durchgehend Langloch", b: "AL300.050", netto: "30,00 €", brutto: "35,70 €" },
+  { a: "150×50 mm",                      b: "AS150.050", netto: "25,00 €", brutto: "29,75 €", img: "/images/product-anschlag-150.jpg" },
+  { a: "150×50 mm Langloch",             b: "AL150.050", netto: "26,00 €", brutto: "30,94 €", img: "/images/product-anschlag-150-lang.jpg" },
+  { a: "300×50 mm Langloch + Loch",      b: "AS300.050", netto: "29,00 €", brutto: "34,51 €", img: "/images/product-anschlag-300-lochlang.jpg" },
+  { a: "300×50 mm durchgehend Langloch", b: "AL300.050", netto: "30,00 €", brutto: "35,70 €", img: "/images/product-anschlag-300-lang.jpg" },
 ];
 
 const WINKEL_ROWS: PRow[] = [
@@ -123,8 +123,8 @@ const WINKEL_ROWS: PRow[] = [
 ];
 
 const WINKELSCHABLONE_ROWS: PRow[] = [
-  { a: "250×250 mm",                 b: "WS250.250", netto: "59,00 €",  brutto: "70,21 €" },
-  { a: "300×300×100 mm Seitenteile", b: "WS300.300", netto: "149,00 €", brutto: "177,31 €" },
+  { a: "250×250 mm",                 b: "WS250.250", netto: "59,00 €",  brutto: "70,21 €",  img: "/images/product-winkelschablone-250.jpg" },
+  { a: "300×300×100 mm Seitenteile", b: "WS300.300", netto: "149,00 €", brutto: "177,31 €", img: "/images/product-winkelschablone-275.jpg" },
 ];
 
 // ── Shared Components ─────────────────────────────────────────────────────────
@@ -173,9 +173,11 @@ interface AccordionProps {
   onToggle: (id: string) => void;
   colA?: string;
   colB?: string;
+  selectedRow?: number;
+  onSelectRow?: (index: number) => void;
 }
 
-function PriceAccordion({ id, rows, isOpen, onToggle, colA, colB }: AccordionProps) {
+function PriceAccordion({ id, rows, isOpen, onToggle, colA, colB, selectedRow, onSelectRow }: AccordionProps) {
   const bodyRef = useRef<HTMLDivElement>(null);
   const isFirst = useRef(true);
 
@@ -250,9 +252,76 @@ function PriceAccordion({ id, rows, isOpen, onToggle, colA, colB }: AccordionPro
       </button>
       <div ref={bodyRef} style={{ overflow: "hidden" }}>
         <div className="border-x border-b border-carbon/20">
-          <PriceTable rows={rows} colA={colA} colB={colB} noBorder />
+          {onSelectRow && rows.some((r) => r.img) ? (
+            <SelectablePriceTable
+              rows={rows}
+              colA={colA}
+              colB={colB}
+              selectedRow={selectedRow ?? 0}
+              onSelectRow={onSelectRow}
+            />
+          ) : (
+            <PriceTable rows={rows} colA={colA} colB={colB} noBorder />
+          )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function SelectablePriceTable({
+  rows,
+  colA = "Maße (mm)",
+  colB = "Bestellnummer",
+  selectedRow,
+  onSelectRow,
+}: {
+  rows: PRow[];
+  colA?: string;
+  colB?: string;
+  selectedRow: number;
+  onSelectRow: (index: number) => void;
+}) {
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm min-w-[360px]">
+        <thead>
+          <tr className="bg-gray-50 border-b border-carbon/10">
+            <th className="text-left px-4 py-2.5 text-xs font-mono uppercase tracking-widest text-carbon/60 whitespace-nowrap">{colA}</th>
+            <th className="text-left px-4 py-2.5 text-xs font-mono uppercase tracking-widest text-carbon/60 whitespace-nowrap">{colB}</th>
+            <th className="text-right px-4 py-2.5 text-xs font-mono uppercase tracking-widest text-carbon/60 whitespace-nowrap">Netto</th>
+            <th className="text-right px-4 py-2.5 text-xs font-mono uppercase tracking-widest text-carbon/60 whitespace-nowrap">inkl. MwSt.</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-carbon/10">
+          {rows.map((row, i) => {
+            const active = i === selectedRow;
+            return (
+              <tr
+                key={i}
+                onClick={() => onSelectRow(i)}
+                className={`cursor-pointer transition-colors ${
+                  active ? "bg-plasma/10" : "hover:bg-gray-50/60"
+                }`}
+              >
+                <td className="px-4 py-3 font-mono text-carbon text-sm">
+                  <span className="inline-flex items-center gap-2">
+                    <span
+                      className={`inline-block w-1.5 h-1.5 rounded-full transition-colors ${
+                        active ? "bg-plasma" : "bg-transparent"
+                      }`}
+                    />
+                    {row.a}
+                  </span>
+                </td>
+                <td className="px-4 py-3 font-mono text-carbon/60 text-sm">{row.b}</td>
+                <td className="px-4 py-3 text-right font-semibold text-carbon text-sm whitespace-nowrap">{row.netto}</td>
+                <td className="px-4 py-3 text-right text-carbon/60 text-sm whitespace-nowrap">{row.brutto}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -290,6 +359,11 @@ function ProductCard({
 }: ProductCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
+
+  // Varianten mit eigenem Bild → beim Auswählen wechselt das Bild oben
+  const hasVariantImages = !!rows && rows.some((r) => r.img);
+  const [selectedRow, setSelectedRow] = useState(0);
+  const displayImg = (hasVariantImages && rows?.[selectedRow]?.img) || img;
 
   function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     if (!cardRef.current) return;
@@ -351,12 +425,13 @@ function ProductCard({
     >
       {/* Fixed-height image area */}
       <div className="h-56 bg-gray-50 shrink-0 flex items-center justify-center border-b border-carbon/10 overflow-hidden">
-        {img ? (
+        {displayImg ? (
           <img
             ref={imgRef}
-            src={img}
+            key={displayImg}
+            src={displayImg}
             alt={imgAlt ?? name}
-            className="w-full h-full object-contain p-6"
+            className="w-full h-full object-contain p-6 animate-[fadeIn_0.35s_ease]"
           />
         ) : (
           <div className="flex flex-col items-center gap-3 text-carbon/20">
@@ -393,7 +468,15 @@ function ProductCard({
             onToggle={onToggle}
             colA={colA}
             colB={colB}
+            selectedRow={selectedRow}
+            onSelectRow={hasVariantImages ? setSelectedRow : undefined}
           />
+        )}
+
+        {hasVariantImages && (
+          <p className="-mt-1 text-xs font-mono text-carbon/40">
+            Variante in der Liste wählen — Bild oben passt sich an.
+          </p>
         )}
 
         {cta && <div className="mt-auto pt-2">{cta}</div>}
@@ -1002,7 +1085,7 @@ export default function ProduktePage() {
               cta={DefaultCTA}
             />
             <ProductCard
-              img="/images/product-anschlag.jpg"
+              img="/images/product-anschlag-150.jpg"
               label="Anschläge"
               name="Anschläge"
               desc="15 mm S355 J2+N · Bohrung Ø 28 mm. 4 Varianten: Standard, Langloch, kombiniert, durchgehend."
@@ -1026,7 +1109,7 @@ export default function ProduktePage() {
               cta={DefaultCTA}
             />
             <ProductCard
-              img="/images/product-winkelschablone.jpg"
+              img="/images/product-winkelschablone-250.jpg"
               label="Positionierhilfe"
               name="Winkelschablonen"
               desc="Präzises Ausrichten von Werkstücken. Sämtliche Anschläge kompatibel mit Schnellspannkugelbolzen."
