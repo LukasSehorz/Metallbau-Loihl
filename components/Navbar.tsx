@@ -17,14 +17,12 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white border-b border-carbon/10">
       <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between h-16 md:h-[72px]">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 shrink-0">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Loihl Logo">
-            <rect width="32" height="32" fill="#1FA9D9" />
-            <rect x="6" y="10" width="20" height="3" fill="white" />
-            <rect x="6" y="16" width="20" height="3" fill="white" />
-            <rect x="6" y="22" width="12" height="3" fill="white" />
-          </svg>
-          <span className="text-carbon font-bold text-lg tracking-tight">LOIHL</span>
+        <Link href="/" className="flex items-center shrink-0">
+          <img
+            src="/images/logo-loihl-nav.png"
+            alt="Loihl Metall- und Systembau"
+            className="h-10 md:h-11 w-auto"
+          />
         </Link>
 
         {/* Desktop Nav */}

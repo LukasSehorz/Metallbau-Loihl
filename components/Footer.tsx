@@ -25,22 +25,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 pb-12 md:pb-16 border-b border-carbon/10">
           {/* Col 1 — Logo + About */}
           <div className="flex flex-col gap-5 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-3">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect width="32" height="32" fill="#1FA9D9" />
-                <rect x="6" y="10" width="20" height="3" fill="white" />
-                <rect x="6" y="16" width="20" height="3" fill="white" />
-                <rect x="6" y="22" width="12" height="3" fill="white" />
-              </svg>
-              <span className="text-carbon font-bold text-base tracking-tight">
-                LOIHL
-              </span>
+            <Link href="/" className="flex items-center">
+              <img
+                src="/images/logo-loihl-nav.png"
+                alt="Loihl Metall- und Systembau"
+                className="h-10 w-auto"
+              />
             </Link>
             <p className="text-carbon/60 text-sm leading-relaxed">
               Schweißtische und Spanntische aus bayerischer Manufaktur.
