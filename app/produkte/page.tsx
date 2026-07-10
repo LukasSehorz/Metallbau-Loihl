@@ -634,7 +634,7 @@ export default function ProduktePage() {
           </div>
           <div className="w-full md:max-w-lg flex flex-col justify-end gap-6">
             <p className="hero-desc text-carbon/60 text-base leading-relaxed">
-              Standardmaße ab 1.590 € netto. Gefertigt in Loiching, Bayern. Fertigungszeit ca. 20 Werktage.
+              Standardmaße ab 1.590 € netto. Gefertigt in Loiching, Bayern. Fertigungszeit ca. 10 Werktage.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
@@ -709,7 +709,7 @@ export default function ProduktePage() {
             />
           </div>
           <p className="sec-p text-carbon/40 text-xs font-mono mt-4">
-            Alle Preise zzgl. MwSt. · Sondermaße realisierbar · Fertigungszeit ca. 20 Werktage
+            Alle Preise zzgl. MwSt. · Sondermaße realisierbar · Fertigungszeit ca. 10 Werktage
           </p>
         </div>
       </section>
@@ -738,7 +738,7 @@ export default function ProduktePage() {
               img="/images/product-schwerlastrollen.jpg"
               label="Upgrade"
               name="Schwerlastrollen"
-              desc="Blickle-Schwerlastrollen, 4 Stück. Tragfähigkeit 1.375 kg/Rolle. Zum Schweißtisch dazubestellbar."
+              desc="Blickle-Schwerlastrollen, 4 Stück. Tragfähigkeit 1.375 kg/Rolle. Alle 4 Rollen können in der Drehbewegung gesperrt werden. Zum Schweißtisch dazubestellbar."
               rows={[{ a: "4 Stück · Blickle", b: "–", netto: "279,00 €", brutto: "332,01 €" }]}
               accordionId="rollen"
               isOpen={isOpen("rollen")}
@@ -1062,12 +1062,12 @@ export default function ProduktePage() {
               },
               {
                 label: "Tische über 2400 mm",
-                value: "+ 79,00 € netto",
-                sub: "(96,01 € brutto) Sperrgutaufpreis",
+                value: "Versand auf Anfrage",
+                sub: "Wir erstellen Ihnen ein individuelles Versandangebot",
               },
               {
                 label: "Fertigungszeit",
-                value: "ca. 20 Werktage",
+                value: "ca. 10 Werktage",
                 sub: "Ab Auftragsbestätigung",
               },
               {

@@ -58,7 +58,7 @@ export default function Hero() {
           {/* Sub */}
           <p className="text-gray-mid text-base md:text-lg lg:text-xl leading-relaxed mb-8 md:mb-10 max-w-lg">
             Schweiß- und Spanntische aus bayerischer Manufaktur.
-            Konfigurierbar. Lieferbar in 2–4 Wochen.
+            Konfigurierbar. Lieferbar in 2 Wochen.
           </p>
 
           {/* CTAs */}
@@ -79,8 +79,8 @@ export default function Hero() {
 
           {/* Trust */}
           <p className="text-gray-mid text-sm font-mono">
-            <span className="text-plasma">★★★★★</span> 4.9 · 20+ Google
-            Reviews · Made in Loiching, Bayern
+            <span className="text-plasma">★★★★★</span> 5,0 · Google
+            Rezensionen · Made in Loiching, Bayern
           </p>
         </div>
       </div>

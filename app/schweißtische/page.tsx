@@ -135,7 +135,7 @@ export default function SchweißtischePage() {
           </div>
           <div className="w-full md:max-w-lg flex flex-col justify-end gap-6">
             <p className="text-carbon/60 text-base leading-relaxed">
-              Standardmaße ab 1.590 € netto. Maßanfertigung möglich. Fertigungszeit ca. 20 Werktage.
+              Standardmaße ab 1.590 € netto. Maßanfertigung möglich. Fertigungszeit ca. 10 Werktage.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
@@ -211,7 +211,7 @@ export default function SchweißtischePage() {
           <PriceTable rows={serieTab === 0 ? toSerie : tdSerie} />
 
           <p className="text-carbon/40 text-xs font-mono mt-4">
-            Alle Preise zzgl. MwSt. · Sondermaße realisierbar · Fertigungszeit ca. 20 Werktage
+            Alle Preise zzgl. MwSt. · Sondermaße realisierbar · Fertigungszeit ca. 10 Werktage
           </p>
         </div>
       </section>
@@ -253,7 +253,7 @@ export default function SchweißtischePage() {
                 </div>
               </div>
               <p className="text-carbon/60 text-sm leading-relaxed">
-                Blickle-Schwerlastrollen, 4 Stück. Tragfähigkeit 1.375 kg/Rolle. Für einfaches Verschieben des Tisches.
+                Blickle-Schwerlastrollen, 4 Stück. Tragfähigkeit 1.375 kg/Rolle. Alle 4 Rollen können in der Drehbewegung gesperrt werden. Für einfaches Verschieben des Tisches.
               </p>
               <div className="mt-auto pt-2">
                 <Link
@@ -313,16 +313,16 @@ export default function SchweißtischePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 py-5">
               <div>
                 <p className="text-xs font-mono uppercase tracking-widest text-carbon/40 mb-1">Tische über 2400 mm</p>
-                <p className="text-carbon font-semibold">+ 79,00 € netto <span className="text-carbon/50 font-normal text-sm">(96,01 € brutto)</span></p>
+                <p className="text-carbon font-semibold">Versand auf Anfrage</p>
               </div>
               <p className="text-carbon/60 text-sm leading-relaxed self-center">
-                Aufpreis für Sperrgut bei Längen über 2400 mm
+                Bei Längen über 2400 mm erstellen wir Ihnen ein individuelles Versandangebot
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-6 py-5">
               <div>
                 <p className="text-xs font-mono uppercase tracking-widest text-carbon/40 mb-1">Fertigungszeit</p>
-                <p className="text-carbon font-semibold">ca. 20 Werktage</p>
+                <p className="text-carbon font-semibold">ca. 10 Werktage</p>
               </div>
               <p className="text-carbon/60 text-sm leading-relaxed self-center">
                 Ab Auftragsbestätigung. Sondermaße auf Anfrage.

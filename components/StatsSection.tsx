@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 const stats = [
   { value: "350+", label: "Tische ausgeliefert",      num: 350, suffix: "+" },
   { value: "100%", label: "Gefertigt in Deutschland", num: 100, suffix: "%" },
-  { value: "2–4",  label: "Wochen Lieferzeit",        num: 4,   suffix: "" },
+  { value: "2",    label: "Wochen Lieferzeit",        num: 2,   suffix: "" },
   { value: "10+",  label: "Jahre Erfahrung",           num: 10,  suffix: "+" },
 ];
 

@@ -78,7 +78,7 @@ export default function SpanntischePage() {
             Spanntische in Standardmaßen
           </h2>
           <p className="text-carbon/60 text-base leading-relaxed mb-12 max-w-xl">
-            Jeder Tisch wird in Bayern gefertigt. Lieferung in 2–4 Wochen.
+            Jeder Tisch wird in Bayern gefertigt. Lieferung in 2 Wochen.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[

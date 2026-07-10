@@ -98,7 +98,7 @@ export default function Testimonials() {
             </h2>
           </div>
           <p className="tmn-rating text-carbon/60 text-sm font-mono">
-            <span className="text-plasma">★★★★★</span> 4.9 / 5 — Google Reviews
+            <span className="text-plasma">★★★★★</span> 5,0 / 5 — Google Rezensionen
           </p>
         </div>
 

@@ -29,11 +29,11 @@ type Step = {
 const STEPS: Step[] = [
   {
     title: "Präzisions-Lochraster",
-    desc: "Jede Bohrung sitzt auf den Zehntel genau — gefräst nach DIN-Norm.",
+    desc: "Jede Bohrung sitzt auf den Zehntel genau.",
   },
   {
     title: "Stahl S355",
-    desc: "Ausschließlich geprüfter Baustahl S355 — plan, gehärtet, maßhaltig.",
+    desc: "Ausschließlich geprüfter Baustahl S355 — plan, maßhaltig.",
   },
   {
     title: "Modulares System",
@@ -45,11 +45,11 @@ const STEPS: Step[] = [
   },
   {
     title: "Made in Bayern",
-    desc: "Gefertigt und geprüft in Loiching. Lieferzeit 2–4 Wochen.",
+    desc: "Gefertigt und geprüft in Loiching. Lieferzeit 2 Wochen.",
   },
 ];
 
-const KEY_FACTS = ["S355", "±0,1 mm", "2–4 Wochen", "Made in Bayern"];
+const KEY_FACTS = ["S355", "±0,1 mm", "2 Wochen", "Made in Bayern"];
 
 type Phase = "intro" | "info";
 

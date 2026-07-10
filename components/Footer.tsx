@@ -114,7 +114,7 @@ export default function Footer() {
               <div className="inline-flex items-center gap-2 border border-carbon/10 px-3 py-2 w-fit">
                 <span className="text-plasma text-sm">★★★★★</span>
                 <span className="text-carbon/60 text-xs font-mono">
-                  4.9 Google Reviews
+                  5,0 Google Rezensionen
                 </span>
               </div>
               <div className="inline-flex items-center gap-2 border border-carbon/10 px-3 py-2 w-fit">

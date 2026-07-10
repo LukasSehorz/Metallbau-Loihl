@@ -10,11 +10,11 @@ const SCROLL_HEIGHT = "800vh";
 const FACTS_START   = 7 / 8;
 
 const STEPS = [
-  { title: "Präzisions-Lochraster",  desc: "Jede Bohrung sitzt auf den Zehntel genau — gefräst nach DIN-Norm." },
-  { title: "Stahl S355",              desc: "Ausschließlich geprüfter Baustahl S355 — plan, gehärtet, maßhaltig." },
+  { title: "Präzisions-Lochraster",  desc: "Jede Bohrung sitzt auf den Zehntel genau." },
+  { title: "Stahl S355",              desc: "Ausschließlich geprüfter Baustahl S355 — plan, maßhaltig." },
   { title: "Modulares System",        desc: "Rahmen, Beine und Tischplatte greifen passgenau ineinander." },
   { title: "Maßanfertigung",          desc: "Jede Größe, jedes Lochsystem — kein Aufpreis, gleiche Qualität." },
-  { title: "Made in Bayern",          desc: "Gefertigt und geprüft in Loiching. Lieferzeit 2–4 Wochen." },
+  { title: "Made in Bayern",          desc: "Gefertigt und geprüft in Loiching. Lieferzeit 2 Wochen." },
 ];
 
 const KEY_FACTS = [

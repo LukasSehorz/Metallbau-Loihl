@@ -109,7 +109,7 @@ export default function ModellToPage() {
             {[
               { value: "15 mm", label: "Materialstärke S355" },
               { value: "100×100", label: "Lochraster Millimeter" },
-              { value: "2–4", label: "Wochen Lieferzeit" },
+              { value: "2", label: "Wochen Lieferzeit" },
               { value: "Unbegrenzt", label: "Spannpositionen möglich" },
             ].map((stat, i) => (
               <div key={i} className="border-l-2 border-plasma pl-6">

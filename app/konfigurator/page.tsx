@@ -92,7 +92,7 @@ export default function KonfiguratorPage() {
               },
               {
                 label: "Fertigungszeit",
-                text: "Ca. 20 Werktage ab Auftragsbestätigung. Gefertigt in Loiching, Bayern.",
+                text: "Ca. 10 Werktage ab Auftragsbestätigung. Gefertigt in Loiching, Bayern.",
               },
             ].map((item, i) => (
               <div key={i} className="flex flex-row gap-8 border-l-2 border-plasma pl-6 py-6 relative">

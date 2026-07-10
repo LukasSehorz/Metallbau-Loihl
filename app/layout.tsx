@@ -17,13 +17,13 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Loihl Metall- und Systembau | Schweißtische aus Bayern",
   description:
-    "Schweißtische und Spanntische aus bayerischer Manufaktur. Konfigurierbar, maßgefertigt, lieferbar in 2–4 Wochen. Direkt vom Inhaber.",
+    "Schweißtische und Spanntische aus bayerischer Manufaktur. Konfigurierbar, maßgefertigt, lieferbar in 2 Wochen. Direkt vom Inhaber.",
   keywords:
     "Schweißtische, Spanntische, Bayern, Manufaktur, Loihing, Maßanfertigung, Demmler, Siegmund",
   openGraph: {
     title: "Loihl Metall- und Systembau | Schweißtische aus Bayern",
     description:
-      "Schweißtische und Spanntische aus bayerischer Manufaktur. Konfigurierbar, lieferbar in 2–4 Wochen.",
+      "Schweißtische und Spanntische aus bayerischer Manufaktur. Konfigurierbar, lieferbar in 2 Wochen.",
     locale: "de_DE",
     type: "website",
   },

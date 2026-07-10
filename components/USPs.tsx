@@ -31,7 +31,7 @@ const usps = [
     ),
   },
   {
-    title: "Lieferzeit 2–4 Wochen",
+    title: "Lieferzeit 2 Wochen",
     description:
       "Schneller als die Konkurrenz, ohne Kompromisse bei der Qualität. Wir planen mit Ihnen gemeinsam.",
     icon: (

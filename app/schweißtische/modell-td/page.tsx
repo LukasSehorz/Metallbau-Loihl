@@ -85,7 +85,7 @@ export default function ModellTdPage() {
               Gebaut für Dauereinsatz und Präzision
             </h2>
             <p className="text-carbon/60 text-base leading-relaxed">
-              Der Modell TD steht auf einer Basis aus gehärtetem Stahlguss, die Verschleiß und Temperaturwechsel aushält.
+              Der Modell TD steht auf einer massiven Basis aus S355-Baustahl, die Verschleiß und Temperaturwechsel aushält.
             </p>
           </div>
           <div className="flex flex-col gap-6">
@@ -95,8 +95,8 @@ export default function ModellTdPage() {
                 text: "Ihr Tisch wächst mit Ihren Anforderungen.",
               },
               {
-                title: "Oberflächenveredelung",
-                text: "Die Arbeitsfläche wird nach dem Gießen gehärtet und geschliffen.",
+                title: "Oberflächenqualität",
+                text: "Die Arbeitsfläche wird plan bearbeitet und vor der Auslieferung geprüft.",
               },
               {
                 title: "Aufrüstbar jederzeit",
@@ -104,7 +104,7 @@ export default function ModellTdPage() {
               },
               {
                 title: "Schnelle Lieferung",
-                text: "Standard-Ausführungen sind in zwei bis vier Wochen bei Ihnen.",
+                text: "Standard-Ausführungen sind in zwei Wochen bei Ihnen.",
               },
             ].map((card, i) => (
               <div key={i} className="bg-white border border-carbon/10 p-6 flex flex-col gap-3">
@@ -146,7 +146,7 @@ export default function ModellTdPage() {
               {
                 num: "04",
                 title: "Liefern lassen",
-                text: "In 2–4 Wochen steht der Tisch in Ihrer Werkstatt.",
+                text: "In 2 Wochen steht der Tisch in Ihrer Werkstatt.",
               },
             ].map((step, i) => (
               <div key={i} className="flex flex-col gap-4">

@@ -31,7 +31,7 @@ const faqItems = [
   },
   {
     question: "Wie lange dauert die Lieferung nach Bestellung?",
-    answer: "20 Werktage. Diese Zeit gilt für Standard- und Sondermaße gleichermaßen und wird eingehalten.",
+    answer: "10 Werktage. Diese Zeit gilt für Standard- und Sondermaße gleichermaßen und wird eingehalten.",
   },
   {
     question: "Beraten Sie auch zu Tischen anderer Hersteller?",

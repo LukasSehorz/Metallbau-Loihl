@@ -37,7 +37,7 @@ const rows = [
   },
   {
     criterion: "Lieferzeit",
-    loihl: <span className="text-carbon font-mono font-semibold text-sm">2–4 Wochen</span>,
+    loihl: <span className="text-carbon font-mono font-semibold text-sm">2 Wochen</span>,
     demmler: <span className="text-gray-500 text-sm">8–12 Wochen</span>,
     siegmund: <span className="text-gray-500 text-sm">6–10 Wochen</span>,
   },

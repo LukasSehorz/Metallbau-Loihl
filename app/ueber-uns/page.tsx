@@ -22,7 +22,7 @@ const milestones = [
   {
     year: "2020",
     title: "Erste Schweißtische",
-    desc: "Die ersten Schweißtische verlassen die Werkstatt. Zuschnitt, Fräsen, Anfasen, Schweißen und Nitrieren – alles in Eigenregie und unter direkter Qualitätskontrolle.",
+    desc: "Die ersten Schweißtische verlassen die Werkstatt. Zuschnitt, Anfasen und Schweißen – alles in Eigenregie und unter direkter Qualitätskontrolle.",
     detail: "Jeder Schritt des Produktionsprozesses bleibt im Haus. Das ist kein Kostenfaktor, sondern das Fundament der Loihl-Qualität.",
     img: "/images/milestone-2020.jpg",
   },
@@ -36,7 +36,7 @@ const milestones = [
   {
     year: "Heute",
     title: "Bayerische Manufaktur",
-    desc: "Loihl steht für Qualität direkt vom Inhaber. Jeder Tisch wird vor dem Versand persönlich geprüft. 20 Werktage, faire Preise, direkte Kommunikation.",
+    desc: "Loihl steht für Qualität direkt vom Inhaber. Jeder Tisch wird vor dem Versand persönlich geprüft. 10 Werktage, faire Preise, direkte Kommunikation.",
     detail: "Daniel kennt jeden Tisch, der die Werkstatt verlässt. Dieses Versprechen ist der Kern von Loihl Metall- und Systembau.",
     img: "/images/milestone-heute.jpg",
   },
@@ -55,62 +55,18 @@ const werte = [
   },
   {
     num: "03",
-    title: "20 Werktage Lieferzeit",
+    title: "10 Werktage Lieferzeit",
     desc: "Keine 8–12 Wochen. Loihl hält, was es verspricht. Lieferzeit dokumentiert – nicht geschätzt.",
   },
   {
     num: "04",
-    title: "Nitrierung in Eigenregie",
-    desc: "Die Härtebehandlung erfolgt unter eigener Qualitätskontrolle – kein Unterauftrag, kein Qualitätsverlust durch Zwischenschritte.",
+    title: "Ehrliche Preisgestaltung",
+    desc: "Material plus Arbeitszeit. Keine versteckten Gebühren, keine Überraschungen auf der Rechnung. Bei umfangreicheren Zubehör-Bestellungen erstellen wir Ihnen gerne ein attraktives Set-Angebot.",
   },
   {
     num: "05",
-    title: "Ehrliche Preisgestaltung",
-    desc: "Material plus Arbeitszeit. Keine versteckten Gebühren, keine Überraschungen auf der Rechnung.",
-  },
-  {
-    num: "06",
     title: "Made in Bayern",
     desc: "Jeder Schweißtisch wird in Loiching gefertigt und vor dem Versand persönlich geprüft. Qualität, die man sieht und fühlt.",
-  },
-];
-
-const jobs = [
-  {
-    title: "Metallbauer / Schweißer (m/w/d)",
-    type: "Vollzeit",
-    location: "Loiching · Niederbayern",
-    desc: "Fertigung und Montage von Schweißtischen und Spanntischen. Du arbeitest direkt am Produkt – von der Stahlplatte bis zum versandfertigen Tisch.",
-    anforderungen: [
-      "Abgeschlossene Ausbildung als Metallbauer oder Schweißer",
-      "Erfahrung in MAG-/WIG-Schweißen von Vorteil",
-      "Sorgfalt, Präzision und Qualitätsbewusstsein",
-      "Teamfähigkeit und Zuverlässigkeit",
-    ],
-    bieten: [
-      "Direkte Zusammenarbeit mit dem Inhaber",
-      "Faire und übertarifliche Bezahlung",
-      "Moderne Maschinen und Werkzeuge",
-      "Abwechslungsreiche Aufgaben, kein Fließbandbetrieb",
-    ],
-  },
-  {
-    title: "CNC-Fräser / Maschinenbediener (m/w/d)",
-    type: "Vollzeit",
-    location: "Loiching · Niederbayern",
-    desc: "Bedienung unserer CNC-Fräsmaschinen für das Lochmuster in unseren Schweißtischen. Präzision von Anfang an – jedes Loch sitzt, wo es sein muss.",
-    anforderungen: [
-      "Erfahrung in CNC-Fräsen oder Bereitschaft zur Einarbeitung",
-      "Technisches Verständnis und Genauigkeit",
-      "Eigenverantwortliches Arbeiten",
-      "Zuverlässigkeit und Teamgeist",
-    ],
-    bieten: [
-      "Sicherer Arbeitsplatz in wachsendem Betrieb",
-      "Faire Bezahlung",
-      "Moderner Maschinenpark",
-      "Kleines Team, kurze Wege, direkte Kommunikation",
-    ],
   },
 ];
 

@@ -385,8 +385,8 @@ export default function KonfiguratorTeaser() {
             </p>
             <p className="text-carbon/60 text-xs mt-3">
               zzgl. Versand 249 € netto + 79 € Verpackung
-              {isSperrgut && " + 79 € Sperrgut (über 2.400 mm)"} · Festpreis nach
-              Konfiguration · Fertigungszeit ca. 20 Werktage
+              {isSperrgut && " · Versand auf Anfrage (über 2.400 mm)"} · Festpreis nach
+              Konfiguration · Fertigungszeit ca. 10 Werktage
             </p>
           </div>
 
