@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Environment, ContactShadows } from "@react-three/drei";
+import { OrbitControls, Environment } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -19,11 +19,16 @@ export type ShowroomConfig = {
 
 /*
  * Parametrisches Tischmodell — ersetzt die statischen Meshy-GLB-Scans.
- * Der Tisch wird 1:1 aus der Konfiguration aufgebaut (Rahmen mit mittiger
- * Öffnung, Eck-Ausleger, 8 Beine — Optik des bisherigen Showroom-Modells):
+ * Zwei Bauformen, abhängig von der Tischgröße:
+ *   · bis 1.400 × 1.400 mm  → massiver Rechtecktisch wie das reale Produkt
+ *     (volle Lochplatte, gelochte Wangen, 4 blaue Beine)
+ *   · größere Maße          → Rahmentisch wie das Showroom-Modell
+ *     ("Lochgröße 22mm.glb": zwei Plattenfelder, mittige Öffnung,
+ *     Eck-Ausleger, 8 Beine)
+ * Es reagiert live auf die Konfiguration:
  *   · Tischgröße   → echte Proportionen aus width × length
  *   · TD-Serie     → zusätzliche Diagonallochung
- *   · Füße/Rollen  → Stellfüße oder Blickle-Rollen an allen Beinen
+ *   · Füße/Rollen  → Stellfüße oder Blickle-Rollen (blau/rot)
  *   · Abdeckblech  → Aluplatten auf der Lochplatte
  */
 
@@ -74,7 +79,10 @@ function perforatedPlateGeometry(
 
   return new THREE.ExtrudeGeometry(shape, {
     depth: t,
-    bevelEnabled: false,
+    bevelEnabled: true,
+    bevelThickness: 2.5,
+    bevelSize: 2.5,
+    bevelSegments: 1,
     curveSegments: 10,
   });
 }
@@ -112,10 +120,18 @@ function buildTable(cfg: ShowroomConfig): THREE.Group {
     metalness: cfg.metalness,
     roughness: cfg.roughness,
   });
+  // Dunkler Stahl für Lochwände & Schnittkanten — lässt die Bohrungen
+  // tief wirken (ExtrudeGeometry: Gruppe 0 = Deckflächen, 1 = Seitenwände)
+  const darkSteel = new THREE.MeshStandardMaterial({
+    color: 0x565b60,
+    metalness: 0.5,
+    roughness: 0.55,
+  });
+  // Pulverbeschichtetes Blau der Beine & Rollenhalter (wie am realen Tisch)
   const legMat = new THREE.MeshStandardMaterial({
-    color: 0x74797f,
-    metalness: 0.7,
-    roughness: 0.4,
+    color: 0x1e8fcc,
+    metalness: 0.3,
+    roughness: 0.45,
   });
   const footMat = new THREE.MeshStandardMaterial({
     color: 0x3c4046,
@@ -123,9 +139,9 @@ function buildTable(cfg: ShowroomConfig): THREE.Group {
     roughness: 0.5,
   });
   const wheelMat = new THREE.MeshStandardMaterial({
-    color: 0x8a3038,
-    metalness: 0.2,
-    roughness: 0.6,
+    color: 0xc03a2b,
+    metalness: 0.15,
+    roughness: 0.55,
   });
   const aluMat = new THREE.MeshStandardMaterial({
     color: 0xd8dbde,
@@ -136,29 +152,32 @@ function buildTable(cfg: ShowroomConfig): THREE.Group {
   const plateY = TABLE_H - PLATE_T; // Unterkante Platte
   const footH = cfg.feet === "casters" ? CASTER_H : FOOT_H;
 
-  // Ringbreite proportional zur Tischgröße, auf das Raster gerundet
-  const rw = Math.min(
-    500,
-    Math.max(300, Math.round((0.32 * Math.min(w, l)) / RASTER) * RASTER)
-  );
-  const innerW = w - 2 * rw;
-  const innerL = l - 2 * rw;
-  const isRing = innerW > RASTER * 1.5 && innerL > RASTER * 1.5;
+  // Bauform: bis 1.400 × 1.400 massiver Rechtecktisch (wie das reale
+  // Produktfoto), darüber Rahmentisch (wie "Lochgröße 22mm.glb")
+  const isRing = Math.max(w, l) > 1400;
 
-  // Plattensegmente (Rahmen mit mittiger Öffnung — wie das bisherige Modell)
+  // Rahmen-Layout: zwei breite Plattenfelder an den Enden, schmale
+  // Verbindungsstege längs, große mittige Öffnung
+  const openW = Math.max(
+    RASTER * 4,
+    Math.round((0.32 * w) / RASTER) * RASTER
+  ); // Öffnung in Tisch-Längsrichtung
+  const railL = 250; // Tiefe der Verbindungsstege
+  const endW = (w - openW) / 2; // Breite der Endfelder
+
   const segments: { w: number; l: number; x: number; z: number }[] = isRing
     ? [
-        { w, l: rw, x: 0, z: -(l / 2 - rw / 2) },
-        { w, l: rw, x: 0, z: l / 2 - rw / 2 },
-        { w: rw, l: innerL, x: -(w / 2 - rw / 2), z: 0 },
-        { w: rw, l: innerL, x: w / 2 - rw / 2, z: 0 },
+        { w: endW, l, x: -(openW / 2 + endW / 2), z: 0 },
+        { w: endW, l, x: openW / 2 + endW / 2, z: 0 },
+        { w: openW, l: railL, x: 0, z: -(l / 2 - railL / 2) },
+        { w: openW, l: railL, x: 0, z: l / 2 - railL / 2 },
       ]
     : [{ w, l, x: 0, z: 0 }];
 
   for (const s of segments) {
     const geo = perforatedPlateGeometry(s.w, s.l, PLATE_T, diagonal);
     geo.rotateX(-Math.PI / 2); // Extrusion zeigt nach +Y (Plattendicke)
-    const mesh = new THREE.Mesh(geo, steel);
+    const mesh = new THREE.Mesh(geo, [steel, darkSteel]);
     mesh.position.set(s.x, plateY, s.z);
     g.add(mesh);
   }
@@ -173,62 +192,86 @@ function buildTable(cfg: ShowroomConfig): THREE.Group {
   ];
   for (const s of skirts) {
     const geo = perforatedPlateGeometry(s.w - 4, PLATE_T, skirtT, false);
-    const mesh = new THREE.Mesh(geo, steel);
+    const mesh = new THREE.Mesh(geo, [steel, darkSteel]);
     mesh.rotation.y = s.rotY;
     mesh.position.set(s.x, plateY + PLATE_T / 2, s.z);
     g.add(mesh);
   }
 
-  // Eck-Ausleger: 4 trapezförmige Platten, diagonal nach außen
-  const wingLen = Math.min(600, Math.max(300, 0.45 * Math.min(w, l)));
-  const wingT = 60;
-  const wingCorners: { sx: number; sz: number; rotY: number }[] = [
-    { sx: 1, sz: 1, rotY: -Math.PI / 4 },
-    { sx: 1, sz: -1, rotY: Math.PI / 4 },
-    { sx: -1, sz: 1, rotY: (-3 * Math.PI) / 4 },
-    { sx: -1, sz: -1, rotY: (3 * Math.PI) / 4 },
-  ];
-  for (const c of wingCorners) {
-    const geo = wingGeometry(wingLen, rw * 0.9, rw * 0.35, wingT);
-    geo.rotateX(-Math.PI / 2);
-    const mesh = new THREE.Mesh(geo, steel);
-    mesh.rotation.y = c.rotY;
-    mesh.position.set(
-      c.sx * (w / 2 - rw / 2),
-      TABLE_H - wingT,
-      c.sz * (l / 2 - rw / 2)
-    );
-    g.add(mesh);
+  // Pfähler (Ausleger-Arme) — Anordnung wie am realen Rahmentisch:
+  // je Stirnseite 2 lange Arme an den Ecken (in Längsrichtung), je
+  // Längsseite 3 kürzere Arme quer nach außen
+  if (isRing) {
+    const wingT = 40;
+
+    // Stirnseiten: 2 lange Pfähler pro Ende
+    const endArmLen = Math.min(700, Math.max(400, 0.22 * w));
+    for (const sx of [-1, 1]) {
+      for (const sz of [-1, 1]) {
+        const geo = wingGeometry(endArmLen, 280, 130, wingT);
+        geo.rotateX(-Math.PI / 2);
+        const mesh = new THREE.Mesh(geo, steel);
+        mesh.rotation.y = sx === 1 ? 0 : Math.PI;
+        mesh.position.set(
+          sx * (w / 2 - 100),
+          TABLE_H - wingT,
+          sz * (l / 2 - 200)
+        );
+        g.add(mesh);
+      }
+    }
+
+    // Längsseiten: 3 kürzere Pfähler pro Seite (Enden + Mitte)
+    const sideArmLen = Math.min(400, Math.max(250, 0.28 * l));
+    const sideArmXs = [-(w / 2 - 350), 0, w / 2 - 350];
+    for (const sz of [-1, 1]) {
+      for (const xi of sideArmXs) {
+        const geo = wingGeometry(sideArmLen, 240, 120, wingT);
+        geo.rotateX(-Math.PI / 2);
+        const mesh = new THREE.Mesh(geo, steel);
+        mesh.rotation.y = sz === 1 ? -Math.PI / 2 : Math.PI / 2;
+        mesh.position.set(xi, TABLE_H - wingT, sz * (l / 2 - 100));
+        g.add(mesh);
+      }
+    }
   }
 
-  // 8 Beine: 4 Ecken + 4 Seitenmitten
+  // Beine: massiver Tisch 4 Ecken (wie das reale Produkt),
+  // Rahmentisch 8 Stück (Ecken, Endfeld-Mitten, Steg-Mitten)
   const legH = plateY - footH;
   const legGeo = new THREE.BoxGeometry(LEG_W, legH, LEG_W);
-  const legPositions: [number, number][] = [
-    [w / 2 - rw / 2, l / 2 - rw / 2],
-    [w / 2 - rw / 2, -(l / 2 - rw / 2)],
-    [-(w / 2 - rw / 2), l / 2 - rw / 2],
-    [-(w / 2 - rw / 2), -(l / 2 - rw / 2)],
-    [0, l / 2 - rw / 2],
-    [0, -(l / 2 - rw / 2)],
-    [w / 2 - rw / 2, 0],
-    [-(w / 2 - rw / 2), 0],
-  ];
+  // Rahmentisch: 6 Beine in 2–2–2 (wie das reale Produkt) — je Endreihe
+  // 2 Eckbeine, dazu 2 Beine unter den Stegmitten
+  const legPositions: [number, number][] = isRing
+    ? [
+        [w / 2 - 250, l / 2 - 250],
+        [w / 2 - 250, -(l / 2 - 250)],
+        [-(w / 2 - 250), l / 2 - 250],
+        [-(w / 2 - 250), -(l / 2 - 250)],
+        [0, l / 2 - railL / 2],
+        [0, -(l / 2 - railL / 2)],
+      ]
+    : [
+        [w / 2 - 140, l / 2 - 140],
+        [w / 2 - 140, -(l / 2 - 140)],
+        [-(w / 2 - 140), l / 2 - 140],
+        [-(w / 2 - 140), -(l / 2 - 140)],
+      ];
   for (const [x, z] of legPositions) {
     const leg = new THREE.Mesh(legGeo, legMat);
     leg.position.set(x, footH + legH / 2, z);
     g.add(leg);
 
     if (cfg.feet === "casters") {
-      // Blickle-Schwerlastrolle: Anschraubplatte, Gabel, Rad
-      const mount = new THREE.Mesh(new THREE.BoxGeometry(130, 14, 130), footMat);
+      // Blickle-Schwerlastrolle: blaue Anschraubplatte & Gabel, rotes Rad
+      const mount = new THREE.Mesh(new THREE.BoxGeometry(130, 14, 130), legMat);
       mount.position.set(x, CASTER_H - 7, z);
       g.add(mount);
       const swivel = new THREE.Mesh(new THREE.CylinderGeometry(35, 35, 24, 20), footMat);
       swivel.position.set(x, CASTER_H - 26, z);
       g.add(swivel);
       for (const side of [-1, 1]) {
-        const fork = new THREE.Mesh(new THREE.BoxGeometry(14, 115, 100), footMat);
+        const fork = new THREE.Mesh(new THREE.BoxGeometry(14, 115, 100), legMat);
         fork.position.set(x + side * 34, 118, z);
         g.add(fork);
       }
@@ -344,7 +387,7 @@ function TableModel({
     } else {
       gsap.to(groupRef.current.scale, { x: s, y: s, z: s, duration: 0.45, ease: "power2.out" });
     }
-  }, [s]);
+  }, [s, animate]);
 
   // ── Wiggle als Bestätigung bei jeder Konfig-Änderung ──────────
   useEffect(() => {
@@ -356,18 +399,11 @@ function TableModel({
     return () => {
       tl.kill();
     };
-  }, [built]);
+  }, [built, animate]);
 
   return (
     <group ref={groupRef} scale={[s, s, s]}>
       <primitive object={built} />
-      <ContactShadows
-        position={[0, -TABLE_H / 2 + 1, 0]}
-        opacity={0.35}
-        scale={maxDim * 2}
-        blur={2.2}
-        far={TABLE_H}
-      />
     </group>
   );
 }

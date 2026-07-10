@@ -176,9 +176,9 @@ export default function KonfiguratorTeaser() {
       series:      series.value,
       feet:        feetIdx === 1 ? "casters" : "fixed",
       sheet:       sheet && sheetAvailable,
-      metalness:   0.85,
-      roughness:   0.3,
-      accentColor: "#909090",
+      metalness:   0.65,
+      roughness:   0.4,
+      accentColor: "#b0b5ba",
     }),
     [size, series, feetIdx, sheet, sheetAvailable]
   );
