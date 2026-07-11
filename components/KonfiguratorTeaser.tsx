@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
 import dynamic from "next/dynamic";
 import type { ShowroomConfig } from "./ShowroomViewer";
 
@@ -129,6 +128,12 @@ export default function KonfiguratorTeaser() {
   const [qty, setQty]             = useState<Record<string, number>>({});
   const [accOpen, setAccOpen]     = useState(false);
 
+  // Angebots-Anfrage
+  const [contact, setContact] = useState({ name: "", email: "", telefon: "", firma: "", nachricht: "" });
+  const [sendState, setSendState] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [sendError, setSendError] = useState("");
+  const [anfrageNr, setAnfrageNr] = useState("");
+
   const series = SERIES[seriesIdx];
   const size   = SIZES[sizeIdx];
   const feet   = FEET[feetIdx];
@@ -196,6 +201,38 @@ export default function KonfiguratorTeaser() {
     }
     return items;
   }, [series, size, feet, sheet, sheetAvailable, sheetPrice, sheetOrder, tableOrder, tablePrice, qty]);
+
+  async function handleAngebotSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (sendState === "sending") return;
+    setSendState("sending");
+    setSendError("");
+    try {
+      const res = await fetch("/api/angebot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kontakt: contact,
+          positionen: bom,
+          totalNetto: total,
+          isSperrgut,
+          serie: series.short,
+          groesse: size.label,
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setSendError(json.error || "Senden fehlgeschlagen. Bitte versuchen Sie es erneut.");
+        setSendState("error");
+        return;
+      }
+      setAnfrageNr(json.anfrageNr || "");
+      setSendState("success");
+    } catch {
+      setSendError("Keine Verbindung. Bitte versuchen Sie es erneut.");
+      setSendState("error");
+    }
+  }
 
   // ─── Select-Schritte 01–04 ───
   const steps = [
@@ -392,12 +429,87 @@ export default function KonfiguratorTeaser() {
             </p>
           </div>
 
-          <Link
-            href="/kontakt"
-            className="mt-8 bg-plasma text-white font-semibold px-8 py-4 text-base text-center hover:bg-plasma/90 transition-colors w-full md:w-auto md:self-start"
-          >
-            Unverbindlich anfragen →
-          </Link>
+          {/* ── Angebot anfordern ── */}
+          {sendState === "success" ? (
+            <div className="mt-8 border border-plasma/30 bg-plasma/5 p-6">
+              <p className="text-carbon font-bold text-lg mb-2">
+                ✓ Anfrage gesendet
+              </p>
+              <p className="text-carbon/60 text-sm leading-relaxed">
+                Ihre Konfiguration{anfrageNr ? ` (${anfrageNr})` : ""} wurde
+                übermittelt. Sie erhalten in Kürze Ihr persönliches Angebot —
+                direkt von Daniel Loihl.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleAngebotSubmit} className="mt-8 flex flex-col gap-4">
+              <p className="text-carbon/60 text-xs font-mono uppercase tracking-widest">
+                Angebot anfordern
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  required
+                  maxLength={120}
+                  placeholder="Name *"
+                  autoComplete="name"
+                  value={contact.name}
+                  onChange={(e) => setContact({ ...contact, name: e.target.value })}
+                  className="border border-carbon/15 px-4 py-3 text-sm text-carbon placeholder:text-carbon/40 focus:border-plasma focus:outline-none transition-colors"
+                />
+                <input
+                  type="email"
+                  required
+                  maxLength={200}
+                  placeholder="E-Mail *"
+                  autoComplete="email"
+                  value={contact.email}
+                  onChange={(e) => setContact({ ...contact, email: e.target.value })}
+                  className="border border-carbon/15 px-4 py-3 text-sm text-carbon placeholder:text-carbon/40 focus:border-plasma focus:outline-none transition-colors"
+                />
+                <input
+                  type="tel"
+                  maxLength={40}
+                  placeholder="Telefon (optional)"
+                  autoComplete="tel"
+                  value={contact.telefon}
+                  onChange={(e) => setContact({ ...contact, telefon: e.target.value })}
+                  className="border border-carbon/15 px-4 py-3 text-sm text-carbon placeholder:text-carbon/40 focus:border-plasma focus:outline-none transition-colors"
+                />
+                <input
+                  type="text"
+                  maxLength={120}
+                  placeholder="Firma (optional)"
+                  autoComplete="organization"
+                  value={contact.firma}
+                  onChange={(e) => setContact({ ...contact, firma: e.target.value })}
+                  className="border border-carbon/15 px-4 py-3 text-sm text-carbon placeholder:text-carbon/40 focus:border-plasma focus:outline-none transition-colors"
+                />
+              </div>
+              <textarea
+                rows={3}
+                maxLength={2000}
+                placeholder="Nachricht (optional) — z. B. Sondermaße oder Fragen"
+                value={contact.nachricht}
+                onChange={(e) => setContact({ ...contact, nachricht: e.target.value })}
+                className="border border-carbon/15 px-4 py-3 text-sm text-carbon placeholder:text-carbon/40 focus:border-plasma focus:outline-none transition-colors resize-y"
+              />
+              {sendState === "error" && (
+                <p className="text-red-600 text-sm">{sendError}</p>
+              )}
+              <button
+                type="submit"
+                disabled={sendState === "sending"}
+                className="bg-plasma text-white font-semibold px-8 py-4 text-base text-center hover:bg-plasma/90 transition-colors w-full md:w-auto md:self-start disabled:opacity-60 disabled:cursor-wait"
+              >
+                {sendState === "sending" ? "Wird gesendet…" : "Angebot absenden →"}
+              </button>
+              <p className="text-carbon/40 text-xs leading-relaxed">
+                Ihre Zusammenstellung wird mit allen Positionen an uns
+                übermittelt. Unverbindlich — Sie erhalten Ihr Angebot per E-Mail.
+              </p>
+            </form>
+          )}
         </div>
 
         {/* Right — 3D Showroom Viewer + Stückliste */}
