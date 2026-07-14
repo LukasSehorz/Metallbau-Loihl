@@ -36,7 +36,8 @@ export type ShowroomConfig = {
 const RASTER = 100;   // Lochraster 100 × 100 mm
 const HOLE_R = 14;    // Ø 28 mm Lochsystem
 const MARGIN = 50;    // Randabstand der Lochreihen
-const PLATE_T = 200;  // Wangenhöhe der Tischplatte
+const PLATE_T = 200;  // Gesamt-Korpushöhe (dünne Arbeitsplatte + Zarge)
+const TOP_T = 32;     // Dicke der Arbeitsplatte — nur EINE dünne Lochplatte oben
 const TABLE_H = 850;  // Arbeitshöhe gesamt
 const LEG_W = 80;     // Kantrohr-Querschnitt der Beine
 const FOOT_H = 60;    // Höhe Stellfuß
@@ -109,6 +110,57 @@ function wingGeometry(len: number, baseW: number, tipW: number, t: number) {
   });
 }
 
+// ── Unterbau: Hohlkasten-Verstrebung (diagonale Eckbleche + Querrippe) ──
+// Bildet die von unten sichtbare Struktur eines echten Schweißtisches nach:
+// offener Kasten mit Eck-Verstärkungen statt massiver Platte.
+function addUnderStructure(
+  g: THREE.Group,
+  cx: number,
+  cz: number,
+  segW: number,
+  segL: number,
+  topUnderY: number, // Unterkante der Arbeitsplatte
+  bottomY: number,   // Unterkante des Korpus (= Zargen-Unterkante)
+  mat: THREE.Material
+) {
+  const apron = topUnderY - bottomY;   // Zargenhöhe
+  const ribH = apron * 0.7;            // Höhe der Verstrebungen unter der Platte
+  const ribY = topUnderY - ribH / 2;   // direkt unter der Platte zentriert
+  const ribT = 12;
+
+  // Diagonale dreieckige Eckbleche (Gussets): rechter Winkel in der Tischecke,
+  // Hypotenuse diagonal nach innen — bleiben vollständig innerhalb der Platte.
+  const gLen = Math.min(300, Math.min(segW, segL) * 0.34);
+  const inset = 70;
+  const cs: [number, number, number][] = [
+    [1, 1, -Math.PI / 4],
+    [-1, 1, (-3 * Math.PI) / 4],
+    [1, -1, Math.PI / 4],
+    [-1, -1, (3 * Math.PI) / 4],
+  ];
+  for (const [sx, sz, ang] of cs) {
+    const shape = new THREE.Shape();
+    shape.moveTo(0, 0);
+    shape.lineTo(-gLen, 0);
+    shape.lineTo(0, -ribH);
+    shape.closePath();
+    const geo = new THREE.ExtrudeGeometry(shape, { depth: ribT, bevelEnabled: false });
+    geo.translate(0, 0, -ribT / 2);
+    const gm = new THREE.Mesh(geo, mat);
+    gm.rotation.y = ang;
+    gm.position.set(cx + sx * (segW / 2 - inset), topUnderY, cz + sz * (segL / 2 - inset));
+    g.add(gm);
+  }
+
+  // Eine mittige Aussteifungsrippe quer zur längeren Achse
+  const rib =
+    segL >= segW
+      ? new THREE.Mesh(new THREE.BoxGeometry(segW - 80, ribH, ribT), mat)
+      : new THREE.Mesh(new THREE.BoxGeometry(ribT, ribH, segL - 80), mat);
+  rib.position.set(cx, ribY, cz);
+  g.add(rib);
+}
+
 // ── Kompletter Tisch als THREE.Group ───────────────────────────
 function buildTable(cfg: ShowroomConfig): THREE.Group {
   const g = new THREE.Group();
@@ -174,12 +226,21 @@ function buildTable(cfg: ShowroomConfig): THREE.Group {
       ]
     : [{ w, l, x: 0, z: 0 }];
 
+  // Arbeitsplatte: nur EINE dünne Lochplatte oben. (Eine massive 200-mm-Platte
+  // ließe die Unterseite wie ein zweites Lochblech wirken und den Tisch zu dick
+  // aussehen.) Darunter offener Hohlkasten aus Zarge + Eck-Verstrebungen.
+  const topUnderY = TABLE_H - TOP_T; // Unterkante der Arbeitsplatte
   for (const s of segments) {
-    const geo = perforatedPlateGeometry(s.w, s.l, PLATE_T, diagonal);
+    const geo = perforatedPlateGeometry(s.w, s.l, TOP_T, diagonal);
     geo.rotateX(-Math.PI / 2); // Extrusion zeigt nach +Y (Plattendicke)
     const mesh = new THREE.Mesh(geo, [steel, darkSteel]);
-    mesh.position.set(s.x, plateY, s.z);
+    mesh.position.set(s.x, topUnderY, s.z);
     g.add(mesh);
+
+    // Unterbau nur für ausreichend große Felder (nicht für schmale Stege)
+    if (Math.min(s.w, s.l) > 350) {
+      addUnderStructure(g, s.x, s.z, s.w, s.l, topUnderY, plateY, darkSteel);
+    }
   }
 
   // Seitenwangen außen: dünne gelochte Blenden, 2 mm vorstehend
