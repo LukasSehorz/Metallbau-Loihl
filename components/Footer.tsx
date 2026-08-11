@@ -33,7 +33,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-carbon/60 text-sm leading-relaxed">
-              Schweißtische und Spanntische aus bayerischer Manufaktur.
+              Schweißtische und Spanntische aus bayerischer Herstellung.
               Maßgefertigt. Persönlich geprüft. Direkt vom Inhaber.
             </p>
             <p className="text-carbon/60 text-xs font-mono">
@@ -148,6 +148,11 @@ export default function Footer() {
             </Link>
           </div>
         </div>
+
+        {/* KI-Hinweis */}
+        <p className="text-carbon/60 text-xs mt-4">
+          Teile der Inhalte dieser Website wurden mit Unterstützung von KI erstellt.
+        </p>
       </div>
     </footer>
   );

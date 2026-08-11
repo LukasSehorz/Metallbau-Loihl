@@ -104,6 +104,13 @@ export default function ImpressumPage() {
                 Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
               </p>
             </div>
+
+            <div className="border-t border-carbon/10 pt-8">
+              <h2 className="text-carbon font-bold text-xl mb-4">Hinweis zu KI-generierten Inhalten</h2>
+              <p className="text-carbon/60 text-base leading-relaxed">
+                Teile der Inhalte dieser Website (Texte und Bilder) wurden mit Unterstützung von künstlicher Intelligenz erstellt und redaktionell geprüft.
+              </p>
+            </div>
           </article>
         </div>
       </section>
