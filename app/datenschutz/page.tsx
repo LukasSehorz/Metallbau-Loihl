@@ -79,6 +79,29 @@ export default function DatenschutzPage() {
                     Diese Website verwendet keine Tracking-Cookies. Technisch notwendige Cookies können gesetzt werden, um die Funktionalität der Website zu gewährleisten.
                   </p>
                 </div>
+
+                <div>
+                  <h3 className="text-carbon font-semibold text-base mb-2">Google Maps</h3>
+                  <p className="text-carbon/60 text-base leading-relaxed">
+                    Auf der Kontaktseite binden wir eine Karte des Dienstes Google Maps ein.
+                    Anbieter ist die Google Ireland Limited, Gordon House, Barrow Street,
+                    Dublin 4, Irland. Beim Aufruf der Kontaktseite wird Ihre IP-Adresse an
+                    Google übertragen; dabei können Daten auch auf Server in den USA
+                    übermittelt werden. Die Nutzung erfolgt im Interesse einer
+                    ansprechenden Darstellung unseres Standorts und einer leichten
+                    Auffindbarkeit (berechtigtes Interesse nach Art. 6 Abs. 1 lit. f DSGVO).
+                    Weitere Informationen finden Sie in der Datenschutzerklärung von Google:{" "}
+                    <a
+                      href="https://policies.google.com/privacy?hl=de"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-plasma hover:underline"
+                    >
+                      policies.google.com/privacy
+                    </a>
+                    .
+                  </p>
+                </div>
               </div>
             </div>
 

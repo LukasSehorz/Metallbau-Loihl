@@ -130,7 +130,7 @@ export default function SchweißtischePage() {
           <div className="w-full md:max-w-lg">
             <p className="text-plasma text-xs font-mono uppercase tracking-widest mb-3">Schweißtische</p>
             <h1 className="text-carbon text-4xl md:text-5xl lg:text-6xl font-bold tracking-tightest leading-tight">
-              Schweißtische — bayerische Manufaktur, geprüfte Präzision
+              Schweißtische — bayerische Herstellung, geprüfte Präzision
             </h1>
           </div>
           <div className="w-full md:max-w-lg flex flex-col justify-end gap-6">

@@ -78,7 +78,7 @@ export default function ZubehoerPage() {
           </div>
           <div className="w-full md:max-w-lg flex flex-col justify-end gap-6">
             <p className="text-carbon/60 text-base leading-relaxed">
-              Hubböcke, Schweißtischbrücken, Spannwerkzeug, Anschläge & Winkel — alles aus einer Manufaktur.
+              Hubböcke, Schweißtischbrücken, Spannwerkzeug, Anschläge & Winkel — alles aus eigener Fertigung.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link

@@ -57,7 +57,7 @@ export default function Hero() {
 
           {/* Sub */}
           <p className="text-gray-mid text-base md:text-lg lg:text-xl leading-relaxed mb-8 md:mb-10 max-w-lg">
-            Schweiß- und Spanntische aus bayerischer Manufaktur.
+            Schweiß- und Spanntische aus bayerischer Herstellung.
             Konfigurierbar. Lieferbar in 2 Wochen.
           </p>
 

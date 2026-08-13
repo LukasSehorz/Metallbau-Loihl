@@ -296,11 +296,12 @@ export default function KontaktPage() {
             </div>
             </div>{/* end left column */}
 
-            {/* OpenStreetMap — right column, full height aligned to top of heading */}
+            {/* Google Maps — zeigt die Halle am Hangweg 5a direkt eingezeichnet */}
             <div className="kontakt-map overflow-hidden" style={{ minHeight: 560, height: "100%" }}>
               <iframe
                 title="Loihl Metall- und Systembau Standort"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=12.34%2C48.50%2C12.40%2C48.54&layer=mapnik&marker=48.517%2C12.367"
+                src="https://maps.google.com/maps?q=Hangweg%205a%2C%2084180%20Loiching&t=m&z=16&output=embed&hl=de"
+                referrerPolicy="no-referrer-when-downgrade"
                 width="100%"
                 height="100%"
                 style={{ border: 0, minHeight: 560, display: "block" }}

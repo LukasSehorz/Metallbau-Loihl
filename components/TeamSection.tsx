@@ -9,7 +9,7 @@ const daniel = {
   name: "Daniel Loihl",
   title: "Inhaber",
   role: "Geschäftsführer",
-  email: "info@metallbau-loihl.de",
+  email: "kontakt@loihl-metallbau.de",
   bio: "Daniel Loihl kennt jeden Tisch, der seine Werkstatt verlässt. Als Inhaber und gelernter Metallbauer steht er für Schweißtische, die halten — gefertigt in Loiching, geprüft nach eigenen Maßstäben. Kein Callcenter, kein Vermittler. Direkte Kommunikation, handwerkliche Verantwortung.",
   facts: [
     { label: "Standort", value: "Loiching, Bayern" },

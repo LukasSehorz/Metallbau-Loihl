@@ -113,13 +113,18 @@ const ANSCHLAG_ROWS: PRow[] = [
   { a: "300×50 mm durchgehend Langloch", b: "AL300.050", netto: "30,00 €", brutto: "35,70 €", img: "/images/product-anschlag-300-lang.jpg" },
 ];
 
+// Die Winkel gibt es in drei unterschiedlichen Bauformen (Katalog S. 8–10):
+// schlanker L-Winkel (200er), dreieckige Konsole mit Schrägstrebe (400×200×100)
+// und die breite Kastenform (ab 400×200×200). Deshalb hat jede Zeile ihr
+// eigenes Bild — beim Auswählen wechselt die Darstellung wie bei den
+// Winkelschablonen.
 const WINKEL_ROWS: PRow[] = [
-  { a: "200×200×50 mm",  b: "WA200.050", netto: "48,00 €",  brutto: "57,12 €" },
-  { a: "400×200×100 mm", b: "WA400.100", netto: "95,00 €",  brutto: "113,05 €" },
-  { a: "400×200×200 mm", b: "WA400.200", netto: "180,00 €", brutto: "214,20 €" },
-  { a: "500×200×200 mm", b: "WA500.200", netto: "200,00 €", brutto: "238,00 €" },
-  { a: "600×200×200 mm", b: "WA600.200", netto: "210,00 €", brutto: "249,90 €" },
-  { a: "700×200×200 mm", b: "WA700.200", netto: "220,00 €", brutto: "261,80 €" },
+  { a: "200×200×50 mm",  b: "WA200.050", netto: "48,00 €",  brutto: "57,12 €",  img: "/images/product-winkel-200.jpg" },
+  { a: "400×200×100 mm", b: "WA400.100", netto: "95,00 €",  brutto: "113,05 €", img: "/images/product-winkel-400-100.jpg" },
+  { a: "400×200×200 mm", b: "WA400.200", netto: "180,00 €", brutto: "214,20 €", img: "/images/product-winkel-400-200.jpg" },
+  { a: "500×200×200 mm", b: "WA500.200", netto: "200,00 €", brutto: "238,00 €", img: "/images/product-winkel-500.jpg" },
+  { a: "600×200×200 mm", b: "WA600.200", netto: "210,00 €", brutto: "249,90 €", img: "/images/product-winkel-600.jpg" },
+  { a: "700×200×200 mm", b: "WA700.200", netto: "220,00 €", brutto: "261,80 €", img: "/images/product-winkel-700.jpg" },
 ];
 
 const WINKELSCHABLONE_ROWS: PRow[] = [
@@ -1097,10 +1102,10 @@ export default function ProduktePage() {
               cta={DefaultCTA}
             />
             <ProductCard
-              img="/images/product-winkel.jpg"
+              img="/images/product-winkel-200.jpg"
               label="Winkel"
               name="Winkel"
-              desc="Auch als Tischverlängerung einsetzbar. Sonderanfertigungen möglich. 6 Standardgrößen."
+              desc="Drei Bauformen: schlanker L-Winkel, dreieckige Konsole und Kastenform. Auch als Tischverlängerung einsetzbar. Sonderanfertigungen möglich. 6 Standardgrößen."
               rows={WINKEL_ROWS}
               accordionId="wa"
               isOpen={isOpen("wa")}

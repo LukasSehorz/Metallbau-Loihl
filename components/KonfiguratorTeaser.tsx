@@ -16,10 +16,10 @@ const ShowroomViewer = dynamic(() => import("./ShowroomViewer"), {
 });
 
 /*
- * Konfigurator — alle Optionen und Preise stammen 1:1 von der Produktseite.
- * Serie (TO/TD) · 12 Tischgrößen · Füße/Rollen · Aluabdeckblech · Zubehör.
- * Bewusst ausgelassen: Hubböcke und Brücken (eigenständige Produkte, kein
- * Bestandteil einer Einzeltisch-Konfiguration).
+ * Konfigurator — alle Optionen und Preise stammen 1:1 aus dem Katalog bzw.
+ * von der Produktseite.
+ * Serie (TO/TD) · 12 Tischgrößen · Füße/Rollen · Aluabdeckblech ·
+ * Aufstellung (1 oder 2 Tische, optional per Brücke verbunden) · Zubehör.
  */
 
 // ─── Tischgrößen mit echten Netto-Preisen (Produktseite: TO/TD/AO/AD-Tabellen) ───
@@ -96,24 +96,67 @@ const ACCESSORIES: Accessory[] = [
   { id: "ab",    group: "Spannwerkzeug", name: "Absteckbolzen",                         orderNo: "AB025.028", price: 12,  img: "/images/product-absteckbolzen.jpg" },
   { id: "sd",    group: "Spannwerkzeug", name: "Schnellspanner Vertikal (4000 N)",      orderNo: "SD.200.028", price: 59, img: "/images/product-schnellspanner.jpg" },
   { id: "kb",    group: "Spannwerkzeug", name: "Schnellspannkugelbolzen (bis 22 kN)",   orderNo: "KB030.028", price: 38,  img: "/images/product-schnellspannkugelbolzen.jpg" },
-  // Anschläge & Positionierhilfen
+  // Anschläge & Positionierhilfen — Bilder 1:1 wie auf der Produktseite/im Katalog
   { id: "ap",    group: "Anschläge & Positionierhilfen", name: "Alu-Prisma 90° / 120°",              orderNo: "AP004.032", price: 23, img: "/images/product-alu-prisma.jpg" },
-  { id: "as150", group: "Anschläge & Positionierhilfen", name: "Anschlag 150×50 mm",                  orderNo: "AS150.050", price: 25, img: "/images/product-anschlag.jpg" },
-  { id: "al150", group: "Anschläge & Positionierhilfen", name: "Anschlag 150×50 mm Langloch",         orderNo: "AL150.050", price: 26, img: "/images/product-anschlag.jpg" },
-  { id: "as300", group: "Anschläge & Positionierhilfen", name: "Anschlag 300×50 mm Langloch + Loch",  orderNo: "AS300.050", price: 29, img: "/images/product-anschlag.jpg" },
-  { id: "al300", group: "Anschläge & Positionierhilfen", name: "Anschlag 300×50 mm durchg. Langloch", orderNo: "AL300.050", price: 30, img: "/images/product-anschlag.jpg" },
-  { id: "ws250", group: "Anschläge & Positionierhilfen", name: "Winkelschablone 250×250 mm",          orderNo: "WS250.250", price: 59, img: "/images/product-winkelschablone.jpg" },
-  { id: "ws300", group: "Anschläge & Positionierhilfen", name: "Winkelschablone 300×300×100 mm",      orderNo: "WS300.300", price: 149, img: "/images/product-winkelschablone.jpg" },
-  // Winkel
-  { id: "wa200", group: "Winkel", name: "Winkel 200×200×50 mm",  orderNo: "WA200.050", price: 48,  img: "/images/product-winkel.jpg" },
-  { id: "wa400", group: "Winkel", name: "Winkel 400×200×100 mm", orderNo: "WA400.100", price: 95,  img: "/images/product-winkel.jpg" },
-  { id: "wa420", group: "Winkel", name: "Winkel 400×200×200 mm", orderNo: "WA400.200", price: 180, img: "/images/product-winkel.jpg" },
-  { id: "wa500", group: "Winkel", name: "Winkel 500×200×200 mm", orderNo: "WA500.200", price: 200, img: "/images/product-winkel.jpg" },
-  { id: "wa600", group: "Winkel", name: "Winkel 600×200×200 mm", orderNo: "WA600.200", price: 210, img: "/images/product-winkel.jpg" },
-  { id: "wa700", group: "Winkel", name: "Winkel 700×200×200 mm", orderNo: "WA700.200", price: 220, img: "/images/product-winkel.jpg" },
+  { id: "as150", group: "Anschläge & Positionierhilfen", name: "Anschlag 150×50 mm",                  orderNo: "AS150.050", price: 25, img: "/images/product-anschlag-150.jpg" },
+  { id: "al150", group: "Anschläge & Positionierhilfen", name: "Anschlag 150×50 mm Langloch",         orderNo: "AL150.050", price: 26, img: "/images/product-anschlag-150-lang.jpg" },
+  { id: "as300", group: "Anschläge & Positionierhilfen", name: "Anschlag 300×50 mm Langloch + Loch",  orderNo: "AS300.050", price: 29, img: "/images/product-anschlag-300-lochlang.jpg" },
+  { id: "al300", group: "Anschläge & Positionierhilfen", name: "Anschlag 300×50 mm durchg. Langloch", orderNo: "AL300.050", price: 30, img: "/images/product-anschlag-300-lang.jpg" },
+  // Beide Winkelschablonen tragen eine eingravierte Gradanzeige auf der Oberfläche
+  { id: "ws250", group: "Anschläge & Positionierhilfen", name: "Winkelschablone 250×250 mm mit Gradanzeige",          orderNo: "WS250.250", price: 59, img: "/images/product-winkelschablone-250.jpg" },
+  { id: "ws300", group: "Anschläge & Positionierhilfen", name: "Winkelschablone 300×300×100 mm Seitenteile, mit Gradanzeige", orderNo: "WS300.300", price: 149, img: "/images/product-winkelschablone-275.jpg" },
+  // Winkel — kompletter Katalogumfang
+  { id: "wa200", group: "Winkel", name: "Winkel 200×200×50 mm",  orderNo: "WA200.050", price: 48,  img: "/images/product-winkel-200.jpg" },
+  { id: "wa400", group: "Winkel", name: "Winkel 400×200×100 mm", orderNo: "WA400.100", price: 95,  img: "/images/product-winkel-400-100.jpg" },
+  { id: "wa420", group: "Winkel", name: "Winkel 400×200×200 mm", orderNo: "WA400.200", price: 180, img: "/images/product-winkel-400-200.jpg" },
+  { id: "wa520", group: "Winkel", name: "Winkel 500×200×200 mm", orderNo: "WA500.200", price: 200, img: "/images/product-winkel-500.jpg" },
+  { id: "wa620", group: "Winkel", name: "Winkel 600×200×200 mm", orderNo: "WA600.200", price: 210, img: "/images/product-winkel-600.jpg" },
+  { id: "wa720", group: "Winkel", name: "Winkel 700×200×200 mm", orderNo: "WA700.200", price: 220, img: "/images/product-winkel-700.jpg" },
+  // Schweißtischbrücken — zum Verbinden mehrerer Tische (Ø 28 mm Diagonallochung)
+  { id: "sb500",  group: "Schweißtischbrücken", name: "Brücke 500×300×200 mm",  orderNo: "SB500.300",  price: 450,  img: "/images/product-bruecke.jpg" },
+  { id: "sb600",  group: "Schweißtischbrücken", name: "Brücke 600×300×200 mm",  orderNo: "SB600.300",  price: 490,  img: "/images/product-bruecke.jpg" },
+  { id: "sb700",  group: "Schweißtischbrücken", name: "Brücke 700×300×200 mm",  orderNo: "SB700.300",  price: 550,  img: "/images/product-bruecke.jpg" },
+  { id: "sb800",  group: "Schweißtischbrücken", name: "Brücke 800×300×200 mm",  orderNo: "SB800.300",  price: 590,  img: "/images/product-bruecke.jpg" },
+  { id: "sb900",  group: "Schweißtischbrücken", name: "Brücke 900×300×200 mm",  orderNo: "SB900.300",  price: 650,  img: "/images/product-bruecke.jpg" },
+  { id: "sb1000", group: "Schweißtischbrücken", name: "Brücke 1.000×300×200 mm", orderNo: "SB1000.300", price: 690, img: "/images/product-bruecke.jpg" },
+  { id: "sb1200", group: "Schweißtischbrücken", name: "Brücke 1.200×300×200 mm", orderNo: "SB1200.300", price: 790, img: "/images/product-bruecke.jpg" },
+  { id: "sb1400", group: "Schweißtischbrücken", name: "Brücke 1.400×300×200 mm", orderNo: "SB1400.300", price: 890, img: "/images/product-bruecke.jpg" },
+  { id: "sb1600", group: "Schweißtischbrücken", name: "Brücke 1.600×300×200 mm", orderNo: "SB1600.300", price: 990, img: "/images/product-bruecke.jpg" },
+  { id: "sb1800", group: "Schweißtischbrücken", name: "Brücke 1.800×300×200 mm", orderNo: "SB1800.300", price: 1090, img: "/images/product-bruecke.jpg" },
+  { id: "sb2000", group: "Schweißtischbrücken", name: "Brücke 2.000×300×200 mm", orderNo: "SB2000.300", price: 1190, img: "/images/product-bruecke.jpg" },
+  { id: "bf750",  group: "Schweißtischbrücken", name: "Brückenfuß",              orderNo: "BF750x080",  price: 79,  img: "/images/product-brueckenfuss.jpg" },
 ];
 
 const ACCESSORY_GROUPS = Array.from(new Set(ACCESSORIES.map((a) => a.group)));
+
+// ─── Aufstellung: ein Tisch oder zwei, optional per Brücke verbunden ───
+// Zwei verbundene Tische ergeben die durchgehende Arbeitsfläche mit der
+// mittigen Öffnung — genau die Aufstellung aus Daniel Loihls Werkstattfoto.
+const BRIDGE_PAIR_NO = "SB1000.300";
+const BRIDGE_PAIR_PRICE = 690; // je Brücke, 2 Stück je Verbindung
+
+// ─── Hubböcke (Katalog: HB…900 / Abdeckungen LA / Schonleisten LK) ───
+// Alle drei Baugrößen sind außen baugleich — nur der Träger in der Mitte
+// wird länger. Höhenverstellbar 700–950 mm, Tragfähigkeit 2.000 kg.
+const HUBBOCKS = [
+  { label: "1.080 mm breit", width: 1080, orderNo: "HB110.900", price: 1390,
+    cover: { orderNo: "LA110.200", price: 290, label: "1.100 × 200 × 125 mm" },
+    strip: { orderNo: "LK110.004", price: 36,  label: "1.079 × 90 × 4 mm" } },
+  { label: "1.280 mm breit", width: 1280, orderNo: "HB130.900", price: 1490,
+    cover: { orderNo: "LA130.200", price: 390, label: "1.300 × 200 × 125 mm" },
+    strip: { orderNo: "LK130.004", price: 43,  label: "1.279 × 90 × 4 mm" } },
+  { label: "1.480 mm breit", width: 1480, orderNo: "HB150.900", price: 1590,
+    cover: { orderNo: "LA150.200", price: 490, label: "1.500 × 200 × 125 mm" },
+    strip: { orderNo: "LK150.004", price: 50,  label: "1.479 × 90 × 4 mm" } },
+];
+
+const ARRANGEMENTS = [
+  { label: "Einzeltisch",                        second: false, dir: "end"  as const, bridge: false },
+  { label: "2 Tische stirnseitig in Reihe",      second: true,  dir: "end"  as const, bridge: false },
+  { label: "2 Tische längs nebeneinander",       second: true,  dir: "side" as const, bridge: false },
+  { label: "2 Tische in Reihe + 2 Brücken",      second: true,  dir: "end"  as const, bridge: true  },
+  { label: "2 Tische nebeneinander + 2 Brücken", second: true,  dir: "side" as const, bridge: true  },
+];
 
 // ─── Helpers ───
 function euro(n: number): string {
@@ -125,6 +168,12 @@ export default function KonfiguratorTeaser() {
   const [sizeIdx, setSizeIdx]     = useState(11); // Start: 1.000 × 1.000 (Einstiegspreis)
   const [feetIdx, setFeetIdx]     = useState(0);
   const [sheet, setSheet]         = useState(false); // Aluabdeckblech
+  const [arrIdx, setArrIdx]       = useState(0);     // Aufstellung (1 oder 2 Tische)
+  // Produktzweig: Schweißtisch oder Hubbock (eigener Konfigurator)
+  const [mode, setMode]           = useState<"tisch" | "hubbock">("tisch");
+  const [hbIdx, setHbIdx]         = useState(0);
+  const [hbCover, setHbCover]     = useState(false);
+  const [hbStrip, setHbStrip]     = useState(false);
   const [qty, setQty]             = useState<Record<string, number>>({});
   const [accOpen, setAccOpen]     = useState(false);
 
@@ -148,11 +197,20 @@ export default function KonfiguratorTeaser() {
   const accessoryCount = Object.values(qty).reduce((s, n) => s + n, 0);
   const accessoryTotal = ACCESSORIES.reduce((s, a) => s + (qty[a.id] ?? 0) * a.price, 0);
 
+  // Aufstellung: der zweite Tisch zählt voll, Brücken kommen paarweise dazu
+  const arrangement = ARRANGEMENTS[arrIdx];
+  const tableCount = arrangement.second ? 2 : 1;
+  const bridgeCount = arrangement.bridge ? 2 : 0;
+  const perTable = tablePrice + feet.price + (sheet && sheetAvailable ? sheetPrice! : 0);
+
+  // Hubbock-Zweig
+  const hb = HUBBOCKS[hbIdx];
+  const hubbockTotal = hb.price + (hbCover ? hb.cover.price : 0) + (hbStrip ? hb.strip.price : 0);
+
   const total =
-    tablePrice +
-    feet.price +
-    (sheet && sheetAvailable ? sheetPrice! : 0) +
-    accessoryTotal;
+    mode === "hubbock"
+      ? hubbockTotal + accessoryTotal
+      : perTable * tableCount + bridgeCount * BRIDGE_PAIR_PRICE + accessoryTotal;
 
   function setQuantity(id: string, next: number) {
     setQty((prev) => {
@@ -184,23 +242,45 @@ export default function KonfiguratorTeaser() {
       metalness:   0.65,
       roughness:   0.4,
       accentColor: "#b0b5ba",
+      second:            mode === "tisch" && arrangement.second,
+      secondArrangement: arrangement.dir,
+      bridge:            mode === "tisch" && arrangement.bridge,
+      product:           mode === "hubbock" ? "hubbock" : "table",
+      hubbockWidth:      hb.width,
+      hubbockCover:      hbCover,
+      hubbockStrip:      hbStrip,
     }),
-    [size, series, feetIdx, sheet, sheetAvailable]
+    [size, series, feetIdx, sheet, sheetAvailable, arrangement, mode, hb, hbCover, hbStrip]
   );
 
   // Stückliste (nur gewählte Positionen)
   const bom = useMemo(() => {
+    if (mode === "hubbock") {
+      const hbItems: { qty: number; name: string; orderNo: string; price: number }[] = [
+        { qty: 1, name: `Hubbock höhenverstellbar ${hb.label}`, orderNo: hb.orderNo, price: hb.price },
+      ];
+      if (hbCover) hbItems.push({ qty: 1, name: `Abdeckung Hubbock ${hb.cover.label}`, orderNo: hb.cover.orderNo, price: hb.cover.price });
+      if (hbStrip) hbItems.push({ qty: 1, name: `Schonleiste PE 1000 ${hb.strip.label}`, orderNo: hb.strip.orderNo, price: hb.strip.price });
+      for (const a of ACCESSORIES) {
+        const n = qty[a.id] ?? 0;
+        if (n > 0) hbItems.push({ qty: n, name: a.name, orderNo: a.orderNo, price: a.price * n });
+      }
+      return hbItems;
+    }
+
     const items: { qty: number; name: string; orderNo: string; price: number }[] = [
-      { qty: 1, name: `Schweißtisch ${series.short} ${size.label}`, orderNo: tableOrder, price: tablePrice },
+      { qty: tableCount, name: `Schweißtisch ${series.short} ${size.label}`, orderNo: tableOrder, price: tablePrice * tableCount },
     ];
-    if (feet.price > 0) items.push({ qty: 1, name: feet.short, orderNo: "Blickle", price: feet.price });
-    if (sheet && sheetAvailable) items.push({ qty: 1, name: "Aluabdeckblech passend", orderNo: sheetOrder, price: sheetPrice! });
+    if (feet.price > 0) items.push({ qty: tableCount, name: feet.short, orderNo: "Blickle", price: feet.price * tableCount });
+    if (sheet && sheetAvailable) items.push({ qty: tableCount, name: "Aluabdeckblech passend", orderNo: sheetOrder, price: sheetPrice! * tableCount });
+    if (bridgeCount > 0)
+      items.push({ qty: bridgeCount, name: "Schweißtischbrücke 1.000×300×200 mm", orderNo: BRIDGE_PAIR_NO, price: BRIDGE_PAIR_PRICE * bridgeCount });
     for (const a of ACCESSORIES) {
       const n = qty[a.id] ?? 0;
       if (n > 0) items.push({ qty: n, name: a.name, orderNo: a.orderNo, price: a.price * n });
     }
     return items;
-  }, [series, size, feet, sheet, sheetAvailable, sheetPrice, sheetOrder, tableOrder, tablePrice, qty]);
+  }, [series, size, feet, sheet, sheetAvailable, sheetPrice, sheetOrder, tableOrder, tablePrice, qty, tableCount, bridgeCount, mode, hb, hbCover, hbStrip]);
 
   async function handleAngebotSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -234,8 +314,49 @@ export default function KonfiguratorTeaser() {
     }
   }
 
-  // ─── Select-Schritte 01–04 ───
-  const steps = [
+  // ─── Select-Schritte ───
+  // Der Hubbock ist ein eigenständiges Produkt und bekommt deshalb einen
+  // eigenen, kurzen Konfigurationspfad statt Tischgröße/Serie/Füße.
+  type Step = {
+    num: string;
+    label: string;
+    value: number;
+    options: string[];
+    onChange: (v: number) => void;
+    disabledIdx?: number;
+  };
+
+  const hubbockSteps: Step[] = [
+    {
+      num: "01",
+      label: "Baugröße",
+      value: hbIdx,
+      options: HUBBOCKS.map((h) => `${h.label} — ${euro(h.price)} €`),
+      onChange: (v: number) => setHbIdx(v),
+    },
+    {
+      num: "02",
+      label: "Abdeckung",
+      value: hbCover ? 1 : 0,
+      options: [
+        "Ohne Abdeckung",
+        `Abdeckung ${hb.cover.label} (${hb.cover.orderNo}) — +${euro(hb.cover.price)} €`,
+      ],
+      onChange: (v: number) => setHbCover(v === 1),
+    },
+    {
+      num: "03",
+      label: "Schonleiste",
+      value: hbStrip ? 1 : 0,
+      options: [
+        "Ohne Schonleiste",
+        `Schonleiste PE 1000 (${hb.strip.orderNo}) — +${euro(hb.strip.price)} €`,
+      ],
+      onChange: (v: number) => setHbStrip(v === 1),
+    },
+  ];
+
+  const tableSteps: Step[] = [
     {
       num: "01",
       label: "Serie wählen",
@@ -272,7 +393,21 @@ export default function KonfiguratorTeaser() {
       onChange: (v: number) => setSheet(v === 1 && sheetAvailable),
       disabledIdx: sheetAvailable ? undefined : 1,
     },
+    {
+      num: "05",
+      label: "Aufstellung",
+      value: arrIdx,
+      options: ARRANGEMENTS.map((a, i) => {
+        if (i === 0) return a.label;
+        const extra = perTable + (a.bridge ? 2 * BRIDGE_PAIR_PRICE : 0);
+        return `${a.label} — +${euro(extra)} €`;
+      }),
+      onChange: (v: number) => setArrIdx(v),
+    },
   ];
+
+  const steps = mode === "hubbock" ? hubbockSteps : tableSteps;
+  const accessoryStepNo = mode === "hubbock" ? "04" : "06";
 
   return (
     <section id="konfigurator" className="bg-white px-6 md:px-10 py-16 md:py-24 lg:py-28 border-t border-carbon/10">
@@ -283,14 +418,35 @@ export default function KonfiguratorTeaser() {
             Konfigurator
           </p>
           <h2 className="text-carbon text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tightest mb-4">
-            In 5 Schritten zum Preis.
+            In {mode === "hubbock" ? 4 : 6} Schritten zum Preis.
           </h2>
-          <p className="text-carbon/60 text-base mb-10">
-            Stellen Sie Ihren Wunschtisch komplett zusammen — mit den
-            Originalpreisen der Produktseite.
+          <p className="text-carbon/60 text-base mb-6">
+            {mode === "hubbock"
+              ? "Stellen Sie Ihren Hubbock zusammen — höhenverstellbar 700–950 mm, Tragfähigkeit bis 2.000 kg."
+              : "Stellen Sie Ihren Wunschtisch komplett zusammen — mit den Originalpreisen der Produktseite."}
           </p>
 
-          {/* Schritte 01–04 */}
+          {/* Produktzweig: Schweißtisch oder Hubbock */}
+          <div className="flex gap-0 mb-10 border border-carbon/10 w-fit">
+            {([
+              ["tisch", "Schweißtisch konfigurieren"],
+              ["hubbock", "Hubbock konfigurieren"],
+            ] as const).map(([m, label]) => (
+              <button
+                key={m}
+                onClick={() => setMode(m)}
+                className={`px-5 py-2.5 text-sm font-mono transition-colors ${
+                  mode === m
+                    ? "bg-plasma text-white"
+                    : "bg-white text-carbon/70 hover:text-carbon"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {/* Schritte 01–05 */}
           <div className="flex flex-col gap-0 border border-carbon/10">
             {steps.map((step) => (
               <div
@@ -324,14 +480,14 @@ export default function KonfiguratorTeaser() {
               </div>
             ))}
 
-            {/* Schritt 05: Zubehör */}
+            {/* Schritt 06: Zubehör */}
             <div className="p-5">
               <button
                 onClick={() => setAccOpen((o) => !o)}
                 className="w-full flex flex-col md:flex-row md:items-center gap-2 md:gap-6 text-left group"
               >
                 <div className="flex items-center gap-4 md:gap-0 md:contents">
-                  <span className="text-plasma font-mono text-sm font-bold shrink-0 w-6">05</span>
+                  <span className="text-plasma font-mono text-sm font-bold shrink-0 w-6">{accessoryStepNo}</span>
                   <span className="text-carbon text-sm font-medium shrink-0 md:w-40">
                     Zubehör
                     <span className="text-carbon/40 font-normal"> (optional)</span>
@@ -427,6 +583,12 @@ export default function KonfiguratorTeaser() {
               {isSperrgut && " · Versand auf Anfrage (über 2.400 mm)"} · Festpreis nach
               Konfiguration · Fertigungszeit ca. 10 Werktage
             </p>
+            {/* Mengenrabatt bewusst ohne feste Prozentsätze — wird individuell
+                vereinbart, weil die Marge je nach Position unterschiedlich ist. */}
+            <p className="text-carbon/60 text-xs mt-2">
+              Bei größeren Stückzahlen ist ein Mengenrabatt möglich — wir klären
+              das gerne persönlich mit Ihnen.
+            </p>
           </div>
 
           {/* ── Angebot anfordern ── */}
@@ -518,7 +680,9 @@ export default function KonfiguratorTeaser() {
             <ShowroomViewer config={config} />
           </div>
           <p className="text-carbon/60 text-xs text-center font-mono">
-            3D-Ansicht: Live-Vorschau — Größe, Füße/Rollen &amp; Abdeckblech folgen Ihrer Auswahl (vereinfachte Darstellung)
+            {mode === "hubbock"
+              ? "3D-Ansicht: Live-Vorschau — Baugröße, Abdeckung & Schonleiste folgen Ihrer Auswahl (vereinfachte Darstellung)"
+              : "3D-Ansicht: Live-Vorschau — Größe, Füße/Rollen, Abdeckblech & Aufstellung folgen Ihrer Auswahl (vereinfachte Darstellung)"}
           </p>
 
           {/* Stückliste */}

@@ -35,7 +35,7 @@ const milestones = [
   },
   {
     year: "Heute",
-    title: "Bayerische Manufaktur",
+    title: "Bayerische Herstellung",
     desc: "Loihl steht für Qualität direkt vom Inhaber. Jeder Tisch wird vor dem Versand persönlich geprüft. 10 Werktage, faire Preise, direkte Kommunikation.",
     detail: "Daniel kennt jeden Tisch, der die Werkstatt verlässt. Dieses Versprechen ist der Kern von Loihl Metall- und Systembau.",
     img: "/images/milestone-heute.jpg",
