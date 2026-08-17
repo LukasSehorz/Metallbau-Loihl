@@ -681,8 +681,21 @@ export default function KonfiguratorTeaser() {
           </div>
           <p className="text-carbon/60 text-xs text-center font-mono">
             {mode === "hubbock"
-              ? "3D-Ansicht: Live-Vorschau — Baugröße, Abdeckung & Schonleiste folgen Ihrer Auswahl (vereinfachte Darstellung)"
-              : "3D-Ansicht: Live-Vorschau — Größe, Füße/Rollen, Abdeckblech & Aufstellung folgen Ihrer Auswahl (vereinfachte Darstellung)"}
+              ? "3D-Ansicht: Live-Vorschau — Baugröße, Abdeckung & Schonleiste folgen Ihrer Auswahl"
+              : "3D-Ansicht: Live-Vorschau — Größe, Füße/Rollen, Abdeckblech & Aufstellung folgen Ihrer Auswahl"}
+          </p>
+          {/* Haftungsausschluss zur 3D-Vorschau: hält fest, dass die Darstellung
+              unverbindlich ist und die Auftragsbestätigung maßgeblich bleibt —
+              damit aus einer Detailabweichung kein Mangel abgeleitet wird. */}
+          <p className="text-carbon/45 text-[11px] leading-relaxed text-center">
+            Die 3D-Ansicht ist eine vereinfachte, beispielhafte Darstellung zur
+            Veranschaulichung. Form, Proportionen, Farbton, Oberfläche und
+            konstruktive Details können vom gelieferten Produkt abweichen; es
+            werden fortlaufend technische Verbesserungen vorgenommen. Die
+            Abbildung ist kein Bestandteil der Beschaffenheitsvereinbarung und
+            begründet keine Zusicherung von Eigenschaften. Verbindlich sind
+            ausschließlich die Maß- und Ausführungsangaben in unserem Angebot
+            bzw. der Auftragsbestätigung.
           </p>
 
           {/* Stückliste */}

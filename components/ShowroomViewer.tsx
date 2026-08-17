@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Environment } from "@react-three/drei";
+import { OrbitControls, Environment, Lightformer } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -253,62 +253,44 @@ function ribGeometry(len: number, h: number, t: number): THREE.ExtrudeGeometry {
   });
 }
 
-// ── Quersteg mit bogenförmig ausgeschnittener Unterkante ───────
-// Auf dem Werkstattfoto wirkt der Steg wie eine Reihe einzelner Segmente —
-// das kommt von großen Bögen in der Unterkante EINES Bleches. Die Bögen laufen
-// als Teil der AUSSENKONTUR mit (kein Loch), damit die Extrusion eine einzige
-// geschlossene Fläche bleibt und die Stege unten offen sind.
+// ── Quersteg: EIN großer Ausschnitt, keine Lochung ─────────────
+// Nach dem Werkstattfoto: das Blech hat keine Bohrungen und auch keine Reihe
+// kleiner Bögen, sondern genau einen langen Ausschnitt in der Unterkante.
+// Links und rechts bleibt je ein volles Stück Blech stehen ("Erhöhung"), das
+// den Steg an die Zarge anbindet; dazwischen läuft der Ausschnitt mit weichen
+// Radien durch.
 function archedRibGeometry(
   len: number,
   h: number,
-  t: number,
-  segments: number
+  t: number
 ): THREE.ExtrudeGeometry {
-  // Lochreihe sitzt hier NICHT mittig, sondern im oberen Blechdrittel — genau
-  // wie auf dem Werkstattfoto: oben die Löcher, darunter der tiefe Ausschnitt.
-  // Mittig säße sie den Bögen im Weg und drückte sie zu flachen Wellen.
-  const holeY = h / 5; // bei RIB_H = 155 → y = 31
-  // Bogenhöhe ~78 % der Blechhöhe, gedeckelt an der Lochunterkante: der
-  // Scheitel darf die Lochreihe (Mitte y = holeY, Radius HOLE_R) nicht
-  // anschneiden — es bleiben mindestens 6 mm Reststeg unter den Löchern.
-  // Bei h = 155: min(120,9 | 88,5) = 88,5 → Scheitel bei y = +11, Lochunterkante
-  // bei 31 − 14 = 17.
-  const archH = Math.min(0.78 * h, h / 2 + holeY - HOLE_R - 6);
-  // Zu kleines/kein Segmentraster → durchgehendes Blech ohne Bögen
-  if (segments <= 1 || archH <= 0) return ribGeometry(len, h, t);
-
-  const pitch = len / segments;
-  // Bogenbreite ~78 % der Segmentteilung: auf dem Werkstattfoto sind die
-  // Ausschnitte breit und dazwischen bleiben nur schmale Stege stehen. Die
-  // Bögen sitzen auf den Teilungspunkten, an den Blechenden bleiben also
-  // pitch − archW/2 ≈ 0,6 · pitch stehen — der Steg läuft außen satt in die
-  // Zarge und hängt nie in der Luft.
-  const archW = Math.min(0.78 * pitch, pitch);
+  // Ausschnitthöhe ~62 % der Blechhöhe. Ohne Lochreihe gibt es keine
+  // Begrenzung nach oben mehr — es bleibt ein durchgehender Obergurt stehen.
+  const cutH = 0.62 * h;
+  // Auflagerbreite je Seite: so viel Blech bleibt außen stehen.
+  const foot = Math.max(70, Math.min(150, len * 0.11));
+  // Eckradius am Übergang Auflager → Ausschnitt
+  const r = Math.min(45, cutH * 0.55, (len - 2 * foot) / 2);
+  const yB = -h / 2;        // Unterkante
+  const yT = yB + cutH;     // Oberkante des Ausschnitts
+  const xL = -len / 2 + foot;
+  const xR = len / 2 - foot;
+  if (xR - xL < 4 * r) return ribGeometry(len, h, t);
 
   const shape = new THREE.Shape();
-  shape.moveTo(-len / 2, -h / 2);
-  // Unterkante von links nach rechts, an jeder Trennstelle ein Bogen nach oben
-  for (let i = 1; i < segments; i++) {
-    const cx = -len / 2 + i * pitch;
-    shape.lineTo(cx - archW / 2, -h / 2);
-    // Halbellipse von π nach 0 (im Uhrzeigersinn) → Scheitel bei -h/2 + archH
-    shape.absellipse(cx, -h / 2, archW / 2, archH, Math.PI, 0, true, 0);
-  }
-  shape.lineTo(len / 2, -h / 2);
+  shape.moveTo(-len / 2, yB);
+  shape.lineTo(xL, yB);
+  // linker Übergang nach oben, dann die gerade Ausschnittkante, dann rechts
+  // wieder herunter — quadraticCurveTo gibt den weichen Radius aus dem Foto.
+  shape.quadraticCurveTo(xL + r * 0.4, yB, xL + r, yT - r * 0.15);
+  shape.quadraticCurveTo(xL + r * 1.5, yT, xL + r * 2.2, yT);
+  shape.lineTo(xR - r * 2.2, yT);
+  shape.quadraticCurveTo(xR - r * 1.5, yT, xR - r, yT - r * 0.15);
+  shape.quadraticCurveTo(xR - r * 0.4, yB, xR, yB);
+  shape.lineTo(len / 2, yB);
   shape.lineTo(len / 2, h / 2);
   shape.lineTo(-len / 2, h / 2);
   shape.closePath();
-
-  // Lochreihe im oberen Blechbereich (y = holeY), über den Bogenausschnitten
-  const addHole = (x: number) => {
-    if (Math.abs(x) > len / 2 - MARGIN * 0.6) return;
-    const p = new THREE.Path();
-    p.absarc(x, holeY, HOLE_R, 0, Math.PI * 2, true);
-    shape.holes.push(p);
-  };
-  const n = Math.max(1, Math.floor((len - 2 * MARGIN) / RASTER) + 1);
-  const x0 = -((n - 1) * RASTER) / 2;
-  for (let i = 0; i < n; i++) addHole(x0 + i * RASTER);
 
   return new THREE.ExtrudeGeometry(shape, {
     depth: t,
@@ -600,11 +582,7 @@ function addUnderStructure(
   const ribPos = ribPositions(longLen);
 
   // Stege spannen zwischen den Wangen und hängen von der Platte herab.
-  // Segmentzahl nach der Steglänge (= kurze Tischseite): große Tische vier,
-  // kleinere drei, die kleinsten zwei — auch beim kleinsten Tisch sollen die
-  // Bögen sichtbar bleiben.
   const span = shortLen - 2 * SKIRT_T;
-  const segments = shortLen >= 1400 ? 4 : shortLen >= 1000 ? 3 : 2;
   // ALLE Stege laufen über die volle Spannweite von Längszarge zu Längszarge —
   // auch die beiden äußeren an den Stirnseiten. Die waren früher zwischen den
   // Eckfüßen verkürzt (bei shortLen = 1000 nur 762 statt 980 mm); genau dadurch
@@ -619,7 +597,7 @@ function addUnderStructure(
   // entfallen, weil die Winkelbleche an den Stirnseiten ihre Position belegt
   // hatten; dadurch fehlten dem Unterbau links und rechts je ein Steg.
   for (const p of ribPos) {
-    const geo = archedRibGeometry(span, RIB_H, RIB_T, segments);
+    const geo = archedRibGeometry(span, RIB_H, RIB_T);
     geo.translate(0, 0, -RIB_T / 2);
     const rib = new THREE.Mesh(geo, [steel, darkSteel]);
     rib.rotation.y = alongX ? Math.PI / 2 : 0; // Steg quer zur Längsachse
@@ -860,8 +838,14 @@ function buildTable(cfg: ShowroomConfig, mats: ReturnType<typeof makeMaterials>)
 
   // ── Aluabdeckblech ──
   if (cfg.sheet) {
-    const plate = new THREE.Mesh(new THREE.BoxGeometry(w - 12, 8, l - 12), aluMat);
-    plate.position.set(0, TABLE_H + 4, 0);
+    // Das Aluabdeckblech ist GELOCHT, nicht geschlossen — im Katalog als
+    // AO (Grundraster) bzw. AD (mit Diagonallochung) geführt. Es folgt damit
+    // derselben Lochung wie die Tischplatte, sodass Spannwerkzeug auch bei
+    // aufgelegtem Blech benutzbar bleibt.
+    const geo = perforatedPlateGeometry(w - 12, l - 12, 8, diagonal);
+    geo.rotateX(-Math.PI / 2);
+    const plate = new THREE.Mesh(geo, [aluMat, midSteel]);
+    plate.position.set(0, TABLE_H, 0);
     g.add(plate);
   }
 
@@ -1011,12 +995,30 @@ function buildHubbock(cfg: ShowroomConfig, mats: ReturnType<typeof makeMaterials
   // 25 mm, genau wie im Katalog angegeben.
   let topY = HB_H;
   if (cfg.hubbockCover) {
-    const coverGeo = perforatedPlateGeometry(w + 20, 200, 125, true);
-    coverGeo.rotateX(-Math.PI / 2);
-    const cover = new THREE.Mesh(coverGeo, [steel, midSteel]);
-    cover.position.set(0, HB_H + 25 - 125, 0);
-    g.add(cover);
-    topY = HB_H + 25;
+    const cLen = w + 20;      // Länge über alles
+    const cDepth = 200;       // Breite laut Katalog
+    const cH = 125;           // Bauhöhe der Haube
+    const cT = 15;            // Blechstärke (S355, 15 mm)
+    const cTopY = HB_H + 25;  // Oberkante — Bauhöhe steigt um 25 mm
+
+    // Deckplatte mit dem 28-mm-Lochsystem
+    const topGeo = perforatedPlateGeometry(cLen, cDepth, cT, true);
+    topGeo.rotateX(-Math.PI / 2);
+    const coverTop = new THREE.Mesh(topGeo, [steel, midSteel]);
+    coverTop.position.set(0, cTopY - cT, 0);
+    g.add(coverTop);
+
+    // Die beiden LANGEN Seiten sind ebenfalls gelocht — die Haube ist von
+    // oben und seitlich bestückbar, nicht nur auf der Deckfläche.
+    const sideH = cH - cT;
+    for (const sz of [-1, 1]) {
+      const geo = ribGeometry(cLen, sideH, cT);
+      geo.translate(0, 0, -cT / 2);
+      const side = new THREE.Mesh(geo, [steel, midSteel]);
+      side.position.set(0, cTopY - cT - sideH / 2, sz * (cDepth / 2 - cT / 2));
+      g.add(side);
+    }
+    topY = cTopY;
   }
 
   // Schonleiste PE 1000 — schützt empfindliche Oberflächen
@@ -1308,7 +1310,21 @@ export default function ShowroomViewer({
     >
       <color attach="background" args={["#ffffff"]} />
 
-      <Environment preset="city" />
+      {/* Studio-Umgebung aus Lightformern statt eines Environment-Presets.
+          Die Presets laden eine HDRI von raw.githack.com nach — das kostete
+          beim Öffnen mehrere Sekunden, hing an der Verfügbarkeit eines
+          fremden Servers und schickte die Besucher-IP dorthin. Diese Variante
+          wird lokal in die Cubemap gerendert: gleiche Spiegelungen auf den
+          Metallflächen, kein externer Request. frames={1} rendert sie einmal
+          statt in jedem Frame. Der Flächenstrahler unter dem Tisch ist wichtig,
+          weil die Untersicht die meistgenutzte Perspektive ist. */}
+      <Environment resolution={128} frames={1}>
+        <Lightformer intensity={2.2} position={[0, 6, -9]} scale={[14, 10, 1]} />
+        <Lightformer intensity={1.1} position={[-8, 2, 2]} rotation-y={Math.PI / 2} scale={[22, 4, 1]} />
+        <Lightformer intensity={1.1} position={[8, 2, 2]} rotation-y={-Math.PI / 2} scale={[22, 4, 1]} />
+        <Lightformer intensity={0.9} position={[0, 7, 4]} rotation-x={Math.PI / 2} scale={[16, 16, 1]} />
+        <Lightformer intensity={0.7} position={[0, -7, 0]} rotation-x={-Math.PI / 2} scale={[20, 20, 1]} />
+      </Environment>
 
       <ambientLight intensity={1.5} color="#ffffff" />
       <directionalLight
