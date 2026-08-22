@@ -107,8 +107,11 @@ const BOLT_H = 14; // Kopfhöhe — hängt komplett unter dem Flansch
 const FOOT_H = 45;
 const CASTER_H = 210;  // Blickle-Schwerlastrolle gesamt
 const RIB_T = 12;      // Blechstärke der Unterbau-Streben
-const RIB_H = 155;     // Höhe der Querstreben — reicht fast bis zur Zargenunterkante
-                       // (APRON_H = 180, Bleche enden also 25 mm darüber)
+// Höhe der Querstreben. Bewusst dicht an der Zargenhöhe (APRON_H = 180): die
+// Stege enden nur 8 mm über der Zargenunterkante. Mit den früheren 155 mm
+// standen sie 25 mm zu hoch und der Unterbau wirkte zu filigran — auf
+// Kundenwunsch fast bündig, das lässt den Tisch deutlich stabiler wirken.
+const RIB_H = 172;
 // Abstand der beiden inneren Querstege zur mittleren Beinachse (nur 6-Fuß-
 // Tische). Laut Kunde rücken sie dicht an den Fuß heran; dazwischen liegt die
 // Montageplatte des mittleren Beins.
