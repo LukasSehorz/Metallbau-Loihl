@@ -267,9 +267,13 @@ function archedRibGeometry(
   h: number,
   t: number
 ): THREE.ExtrudeGeometry {
-  // Ausschnitthöhe ~62 % der Blechhöhe. Ohne Lochreihe gibt es keine
-  // Begrenzung nach oben mehr — es bleibt ein durchgehender Obergurt stehen.
-  const cutH = 0.62 * h;
+  // Ausschnitthöhe nur ~38 % der Blechhöhe: entscheidend ist nicht der
+  // Ausschnitt, sondern der durchgehende Obergurt darüber. Mit den früheren
+  // 62 % blieb bei h = 172 nur ein 65-mm-Streifen stehen und der Unterbau
+  // wirkte filigran; jetzt sind es rund 107 mm — auf Kundenwunsch: "die
+  // Einkerbung soll nicht so krass nach innen gehen, der Streifen in der
+  // Mitte soll höher sein, damit es stabiler ausschaut".
+  const cutH = 0.38 * h;
   // Auflagerbreite je Seite: so viel Blech bleibt außen stehen.
   const foot = Math.max(70, Math.min(150, len * 0.11));
   // Eckradius am Übergang Auflager → Ausschnitt
