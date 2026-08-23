@@ -57,7 +57,7 @@ export default function SpanntischePage() {
                 text: "Massive Stahlplatten halten große Werkstücke sicher.",
               },
               {
-                title: "Präzisions-Bohrungen und Fräsarbeiten",
+                title: "Präzises Bohren und Ausrichten",
                 text: "Vibrationsfrei und formstabil.",
               },
             ].map((card, i) => (
@@ -177,7 +177,7 @@ export default function SpanntischePage() {
                 </span>
               </div>
               <div>
-                <h3 className="text-carbon font-bold text-xl mb-1">Spanntisch — für Spannen, Bohren, Fräsen, Montieren</h3>
+                <h3 className="text-carbon font-bold text-xl mb-1">Spanntisch — für Spannen, Bohren, Montieren</h3>
                 <p className="text-carbon/60 text-sm">Spezialisiert auf Präzisionsbearbeitung und Schwerlast</p>
               </div>
               <div className="grid grid-cols-3 gap-4">

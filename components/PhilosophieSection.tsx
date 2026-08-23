@@ -12,7 +12,7 @@ const features = [
   },
   {
     title: "Material ohne Kompromisse",
-    body: "Wir verwenden ausschließlich S235 und S355 Baustahl — präzise gelagert, plan gefräst, mit engen Toleranzen verarbeitet. Das Ergebnis: Tische, die auch nach Jahren noch den gleichen Standhalten.",
+    body: "Wir verwenden ausschließlich S235 und S355 Baustahl — präzise gelagert, plan ausgerichtet, mit engen Toleranzen verarbeitet. Das Ergebnis: Tische, die auch nach Jahren noch den gleichen Standhalten.",
     image: "/images/phi-material.jpg",
   },
   {
