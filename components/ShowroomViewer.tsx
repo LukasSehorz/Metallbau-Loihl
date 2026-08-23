@@ -581,7 +581,10 @@ function addUnderStructure(
 ) {
   const { steel, darkSteel } = mats;
   const topUnderY = TABLE_H - TOP_T; // Unterkante der Arbeitsplatte
-  const ribY = topUnderY - RIB_H / 2;
+  // 2 mm Versatz nach unten: sonst lägen Stegoberkante und Plattenunterkante
+  // exakt aufeinander — koinzidente Flächen flackern je nach Blickwinkel
+  // (Z-Fighting). Bei 850 mm Bauhöhe ist der Versatz unsichtbar.
+  const ribY = topUnderY - RIB_H / 2 - 2;
   const alongX = w >= l;
   const longLen = alongX ? w : l;
   const shortLen = alongX ? l : w;
