@@ -139,7 +139,7 @@ export default function StatsSection() {
             </p>
             <div className="mt-8">
               <a
-                href="/schweißtische"
+                href="/schweisstische"
                 className="inline-flex items-center gap-3 border border-off-white/25 px-7 py-3 text-sm font-semibold tracking-wide text-off-white font-mono transition-all duration-200 hover:border-plasma hover:text-plasma"
               >
                 Produkte entdecken

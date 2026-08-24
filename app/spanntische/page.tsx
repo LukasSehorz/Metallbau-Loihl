@@ -24,7 +24,7 @@ export default function SpanntischePage() {
               <Link href="/#konfigurator" className="bg-plasma text-white font-semibold px-6 py-3 hover:bg-plasma/90 transition-colors inline-block">
                 Konfigurator
               </Link>
-              <Link href="/katalog" className="border border-carbon/20 text-carbon font-semibold px-6 py-3 hover:border-carbon/40 transition-colors inline-block">
+              <Link href="/produkte" className="border border-carbon/20 text-carbon font-semibold px-6 py-3 hover:border-carbon/40 transition-colors inline-block">
                 Katalog
               </Link>
             </div>
@@ -164,7 +164,7 @@ export default function SpanntischePage() {
                 <li className="flex items-center gap-2 text-sm text-carbon/60"><span className="text-plasma">✓</span>Kleine bis mittlere Werkstücke</li>
                 <li className="flex items-center gap-2 text-sm text-carbon/40"><span>✗</span>Schwerlast-Montage</li>
               </ul>
-              <Link href="/schweißtische" className="text-plasma text-sm font-semibold hover:underline flex items-center gap-1">
+              <Link href="/schweisstische" className="text-plasma text-sm font-semibold hover:underline flex items-center gap-1">
                 Schweißtische ansehen →
               </Link>
             </div>

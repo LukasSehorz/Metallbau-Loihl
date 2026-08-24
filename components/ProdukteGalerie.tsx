@@ -10,7 +10,7 @@ const produkte = [
     image: "/images/product-schweisstische.jpg",
     title: "Schweißtische",
     category: "System 16 · Stärke 8 mm · S235/S355",
-    href: "/schweißtische",
+    href: "/schweisstische",
   },
   {
     id: "02",
@@ -24,7 +24,7 @@ const produkte = [
     image: "/images/product-zubehoer.jpg",
     title: "Zubehör & Komponenten",
     category: "Spanner · Anschläge · Aufnahmen",
-    href: "/zubehör",
+    href: "/zubehoer",
   },
 ];
 

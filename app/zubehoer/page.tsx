@@ -448,7 +448,7 @@ export default function ZubehoerPage() {
               Artikel anfragen
             </Link>
             <Link
-              href="/schweißtische"
+              href="/schweisstische"
               className="border border-carbon/20 text-carbon font-semibold px-8 py-4 text-base hover:border-carbon/40 transition-colors"
             >
               Zu den Schweißtischen

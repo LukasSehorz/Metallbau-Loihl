@@ -1,11 +1,11 @@
 import Link from "next/link";
 
 const navLinks = [
-  { label: "Schweißtische", href: "/schweißtische" },
+  { label: "Schweißtische", href: "/schweisstische" },
   { label: "Spanntische", href: "/spanntische" },
-  { label: "Zubehör", href: "/zubehör" },
+  { label: "Zubehör", href: "/zubehoer" },
   { label: "Konfigurator", href: "/konfigurator" },
-  { label: "Katalog", href: "/katalog" },
+  { label: "Katalog", href: "/produkte" },
 ];
 
 const companyLinks = [

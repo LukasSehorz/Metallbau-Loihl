@@ -184,13 +184,13 @@ export default function PhilosophieSection() {
         {/* CTAs */}
         <div className="phi-cta-row mt-12 flex flex-wrap items-center gap-6 md:mt-16">
           <a
-            href="/schweißtische"
+            href="/schweisstische"
             className="phi-cta inline-flex items-center bg-plasma px-8 py-4 text-sm font-semibold uppercase tracking-[0.1em] text-carbon transition-opacity duration-200 hover:opacity-85 font-mono"
           >
             Produkte entdecken
           </a>
           <a
-            href="/manufaktur"
+            href="/ueber-uns"
             className="phi-cta inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.1em] text-carbon/50 transition-colors duration-200 hover:text-carbon font-mono"
           >
             Zur Manufaktur

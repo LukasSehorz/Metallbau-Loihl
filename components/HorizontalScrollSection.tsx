@@ -84,7 +84,7 @@ export default function HorizontalScrollSection() {
                 </cite>
               </blockquote>
               <Link
-                href="/manufaktur"
+                href="/ueber-uns"
                 className="inline-flex items-center gap-2 text-carbon font-semibold text-sm border-b-2 border-plasma pb-0.5 w-fit hover:text-plasma transition-colors"
               >
                 Zur Manufaktur

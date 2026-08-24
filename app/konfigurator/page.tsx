@@ -49,7 +49,7 @@ export default function KonfiguratorPage() {
               <a href="#konfigurator" className="bg-plasma text-white font-semibold px-6 py-3 hover:bg-plasma/90 transition-colors inline-block">
                 Starten
               </a>
-              <Link href="/katalog" className="border border-carbon/20 text-carbon font-semibold px-6 py-3 hover:border-carbon/40 transition-colors inline-block">
+              <Link href="/produkte" className="border border-carbon/20 text-carbon font-semibold px-6 py-3 hover:border-carbon/40 transition-colors inline-block">
                 Katalog
               </Link>
             </div>
