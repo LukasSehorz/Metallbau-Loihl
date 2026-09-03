@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import MapConsent from "@/components/MapConsent";
 
 export default function KontaktCTA() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -119,17 +120,12 @@ export default function KontaktCTA() {
 
           {/* Right — Google Maps */}
           <div className="kct-right flex flex-col gap-4">
+            {/* Zwei-Klick-Lösung statt direktem iframe: ohne Einwilligung geht
+                kein Request an Google. Der frühere Direkteinbau hier hat die
+                Startseite trotz der Consent-Lösung auf /kontakt weiterhin
+                Google kontaktieren lassen. */}
             <div className="flex-1 min-h-[320px] md:min-h-[440px] overflow-hidden border border-carbon/10">
-              <iframe
-                src="https://maps.google.com/maps?q=Hangweg+5a,84180+Loiching,Bayern,Germany&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                width="100%"
-                height="100%"
-                style={{ border: 0, minHeight: "440px" }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Metallbau Loihl Standort"
-              />
+              <MapConsent minHeight={440} />
             </div>
             <div className="flex items-center gap-2 text-carbon/60 text-sm">
               <svg className="w-4 h-4 text-carbon/60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

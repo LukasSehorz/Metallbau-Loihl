@@ -74,23 +74,59 @@ export default function DatenschutzPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-carbon font-semibold text-base mb-2">Cookies</h3>
+                  <h3 className="text-carbon font-semibold text-base mb-2">Cookies und Einwilligung</h3>
                   <p className="text-carbon/60 text-base leading-relaxed">
-                    Diese Website verwendet keine Tracking-Cookies. Technisch notwendige Cookies können gesetzt werden, um die Funktionalität der Website zu gewährleisten.
+                    Technisch notwendige Cookies werden gesetzt, um die Funktionalität
+                    der Website zu gewährleisten und Ihre Auswahl im Einwilligungsbanner
+                    zu speichern. Alle darüber hinausgehenden Dienste — Statistik,
+                    Marketing und eingebettete Karten — werden erst geladen, nachdem Sie
+                    im Banner ausdrücklich zugestimmt haben (Art. 6 Abs. 1 lit. a DSGVO,
+                    § 25 Abs. 1 TDDDG). Ohne Ihre Einwilligung findet insoweit keine
+                    Datenübertragung an Dritte statt. Sie können Ihre Entscheidung
+                    jederzeit über den Link &bdquo;Cookie-Einstellungen&ldquo; im Seitenfuß
+                    widerrufen; der Widerruf gilt für die Zukunft.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-carbon font-semibold text-base mb-2">Google Tag Manager</h3>
+                  <p className="text-carbon/60 text-base leading-relaxed">
+                    Wir verwenden den Google Tag Manager. Anbieter ist die Google Ireland
+                    Limited, Gordon House, Barrow Street, Dublin 4, Irland. Der Tag Manager
+                    ist ein Werkzeug, mit dem wir Tracking- und Marketing-Tags verwalten.
+                    Er selbst erstellt keine Nutzerprofile, lädt jedoch weitere Dienste
+                    nach, die ihrerseits Daten erheben können. Beim Laden werden Ihre
+                    IP-Adresse und Browserdaten an Google übertragen; dabei können Daten
+                    auch auf Server in den USA übermittelt werden. Für die USA besteht ein
+                    Angemessenheitsbeschluss der EU-Kommission (EU-US Data Privacy
+                    Framework). Der Tag Manager wird ausschließlich nach Ihrer
+                    Einwilligung geladen (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TDDDG).
+                    Weitere Informationen:{" "}
+                    <a
+                      href="https://policies.google.com/privacy?hl=de"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-plasma hover:underline"
+                    >
+                      policies.google.com/privacy
+                    </a>
+                    .
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-carbon font-semibold text-base mb-2">Google Maps</h3>
                   <p className="text-carbon/60 text-base leading-relaxed">
-                    Auf der Kontaktseite binden wir eine Karte des Dienstes Google Maps ein.
-                    Anbieter ist die Google Ireland Limited, Gordon House, Barrow Street,
-                    Dublin 4, Irland. Beim Aufruf der Kontaktseite wird Ihre IP-Adresse an
-                    Google übertragen; dabei können Daten auch auf Server in den USA
-                    übermittelt werden. Die Nutzung erfolgt im Interesse einer
-                    ansprechenden Darstellung unseres Standorts und einer leichten
-                    Auffindbarkeit (berechtigtes Interesse nach Art. 6 Abs. 1 lit. f DSGVO).
-                    Weitere Informationen finden Sie in der Datenschutzerklärung von Google:{" "}
+                    Wir binden Karten des Dienstes Google Maps ein. Anbieter ist die
+                    Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland.
+                    Die Karte wird erst geladen, nachdem Sie zugestimmt haben — entweder
+                    im Einwilligungsbanner oder durch Klick auf &bdquo;Karte laden&ldquo; an der
+                    Stelle der Karte. Vorher wird keine Verbindung zu Google hergestellt.
+                    Beim Laden werden Ihre IP-Adresse und Browserdaten an Google
+                    übertragen; dabei können Daten auch auf Server in den USA übermittelt
+                    werden. Rechtsgrundlage ist Ihre Einwilligung (Art. 6 Abs. 1 lit. a
+                    DSGVO, § 25 Abs. 1 TDDDG). Weitere Informationen finden Sie in der
+                    Datenschutzerklärung von Google:{" "}
                     <a
                       href="https://policies.google.com/privacy?hl=de"
                       target="_blank"

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CookieSettingsLink from "@/components/CookieSettingsLink";
 
 const navLinks = [
   { label: "Schweißtische", href: "/schweisstische" },
@@ -146,6 +147,7 @@ export default function Footer() {
             >
               Datenschutz
             </Link>
+            <CookieSettingsLink className="text-carbon/60 text-xs hover:text-carbon transition-colors" />
           </div>
         </div>
 

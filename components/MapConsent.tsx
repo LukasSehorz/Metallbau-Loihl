@@ -1,6 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  CONSENT_EVENT,
+  leseConsent,
+  speichereConsent,
+  type ConsentState,
+} from "@/lib/consent";
 
 /*
  * Zwei-Klick-Lösung für die Google-Maps-Karte.
@@ -11,37 +17,38 @@ import { useEffect, useState } from "react";
  * Komponente: Beim direkten Einbetten lädt die Karte schon beim Seitenaufruf
  * und überträgt dabei die IP-Adresse jedes Besuchers an Google.
  *
- * Die Entscheidung wird in localStorage gemerkt, damit wiederkehrende Besucher
- * nicht jedes Mal erneut klicken müssen. localStorage kann in privaten Fenstern
- * oder bei gesperrten Cookies werfen — deshalb sind Lesen und Schreiben in
- * try/catch gekapselt und die Karte fällt in diesem Fall auf "nicht geladen"
- * zurück.
+ * Die Entscheidung teilt sich denselben Speicher wie das Cookie-Banner. Wer
+ * dort "Externe Karten" erlaubt, sieht die Karte sofort; der Klick hier setzt
+ * umgekehrt dieselbe Kategorie. Sonst würden Banner und Karte
+ * widersprüchliche Zustände anzeigen.
  */
 
-const STORAGE_KEY = "loihl-maps-consent";
 const MAP_SRC =
   "https://maps.google.com/maps?q=Hangweg%205a%2C%2084180%20Loiching&t=m&z=16&output=embed&hl=de";
 const ROUTE_URL =
   "https://www.google.com/maps/dir/?api=1&destination=Hangweg+5a,+84180+Loiching";
 
-export default function MapConsent() {
+export default function MapConsent({ minHeight = 560 }: { minHeight?: number }) {
   const [loaded, setLoaded] = useState(false);
+
   // Erst nach dem Mount lesen — sonst weicht das Server-Rendering vom Client ab.
   useEffect(() => {
-    try {
-      if (localStorage.getItem(STORAGE_KEY) === "1") setLoaded(true);
-    } catch {
-      /* privates Fenster o. ä. — Karte bleibt ungeladen */
-    }
+    setLoaded(leseConsent()?.karten === true);
+
+    // Auf Änderungen im Banner reagieren, damit die Karte nicht stehen bleibt.
+    const onChange = (e: Event) => {
+      const detail = (e as CustomEvent<ConsentState | null>).detail;
+      setLoaded(detail?.karten === true);
+    };
+    window.addEventListener(CONSENT_EVENT, onChange);
+    return () => window.removeEventListener(CONSENT_EVENT, onChange);
   }, []);
 
   const accept = () => {
-    setLoaded(true);
-    try {
-      localStorage.setItem(STORAGE_KEY, "1");
-    } catch {
-      /* Merken nicht möglich, Karte lädt trotzdem für diese Sitzung */
-    }
+    // Die übrigen Kategorien unangetastet lassen: Wer nur die Karte sehen
+    // will, hat damit nicht dem Tracking zugestimmt.
+    const aktuell = leseConsent();
+    speichereConsent({ statistik: aktuell?.statistik === true, karten: true });
   };
 
   if (loaded) {
@@ -52,7 +59,7 @@ export default function MapConsent() {
         referrerPolicy="no-referrer-when-downgrade"
         width="100%"
         height="100%"
-        style={{ border: 0, minHeight: 560, display: "block" }}
+        style={{ border: 0, minHeight, display: "block" }}
         allowFullScreen
         loading="lazy"
       />
@@ -62,7 +69,7 @@ export default function MapConsent() {
   return (
     <div
       className="h-full w-full bg-gray-100 border border-carbon/10 flex flex-col items-center justify-center gap-5 px-8 py-12 text-center"
-      style={{ minHeight: 560 }}
+      style={{ minHeight }}
     >
       <svg
         className="w-10 h-10 text-carbon/30"

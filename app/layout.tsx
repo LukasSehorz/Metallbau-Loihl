@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import CookieBanner from "@/components/CookieBanner";
+import GtmLoader from "@/components/GtmLoader";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -38,6 +40,9 @@ export default function RootLayout({
     <html lang="de" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="bg-carbon text-off-white font-sans antialiased">
         {children}
+        {/* Der Tag Manager fügt sich selbst erst ein, wenn eingewilligt wurde. */}
+        <GtmLoader />
+        <CookieBanner />
       </body>
     </html>
   );
