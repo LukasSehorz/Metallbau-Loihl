@@ -39,9 +39,11 @@ export default function RootLayout({
   return (
     <html lang="de" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="bg-carbon text-off-white font-sans antialiased">
-        {children}
-        {/* Der Tag Manager fügt sich selbst erst ein, wenn eingewilligt wurde. */}
+        {/* Muss früh im Dokument stehen: Die Search Console sucht die
+            Container-ID im ausgelieferten HTML. Geladen wird der Container
+            trotzdem erst nach Einwilligung — siehe GtmLoader. */}
         <GtmLoader />
+        {children}
         <CookieBanner />
       </body>
     </html>
