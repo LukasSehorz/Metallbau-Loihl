@@ -62,10 +62,6 @@ const VIEWS: View[] = [
   { id: "l-doppeln", title: "2 Tische ohne Brücke",             cfg: { width: 2000, length: 1000, second: true }, cam: [6, 5, 8] },
   { id: "m-blech",   title: "Mit Aluabdeckblech",               cfg: { width: 2000, length: 1000, sheet: true }, cam: [5.5, 4, 7.5] },
   { id: "n-top",     title: "Draufsicht (durchgehende Platte)", cfg: { width: 2400, length: 1400 },             cam: [0.1, 9, 0.1] },
-  { id: "o-hb1080",  title: "Hubbock 1.080 mm",                cfg: { product: "hubbock", hubbockWidth: 1080 }, cam: [5.5, 3.2, 7.5] },
-  { id: "p-hb1480",  title: "Hubbock 1.480 mm",                cfg: { product: "hubbock", hubbockWidth: 1480 }, cam: [5.5, 3.2, 7.5] },
-  { id: "q-hbcover", title: "Hubbock + Abdeckung + Schonleiste", cfg: { product: "hubbock", hubbockWidth: 1280, hubbockCover: true, hubbockStrip: true }, cam: [5.5, 3.2, 7.5] },
-  { id: "r-hbfront", title: "Hubbock frontal",                 cfg: { product: "hubbock", hubbockWidth: 1080 }, cam: [0.3, 1.2, 8] },
 ];
 
 export default function Test3DPage() {

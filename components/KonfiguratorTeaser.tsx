@@ -135,21 +135,6 @@ const ACCESSORY_GROUPS = Array.from(new Set(ACCESSORIES.map((a) => a.group)));
 const BRIDGE_PAIR_NO = "SB1000.300";
 const BRIDGE_PAIR_PRICE = 690; // je Brücke, 2 Stück je Verbindung
 
-// ─── Hubböcke (Katalog: HB…900 / Abdeckungen LA / Schonleisten LK) ───
-// Alle drei Baugrößen sind außen baugleich — nur der Träger in der Mitte
-// wird länger. Höhenverstellbar 700–950 mm, Tragfähigkeit 2.000 kg.
-const HUBBOCKS = [
-  { label: "1.080 mm breit", width: 1080, orderNo: "HB110.900", price: 1390,
-    cover: { orderNo: "LA110.200", price: 290, label: "1.100 × 200 × 125 mm" },
-    strip: { orderNo: "LK110.004", price: 36,  label: "1.079 × 90 × 4 mm" } },
-  { label: "1.280 mm breit", width: 1280, orderNo: "HB130.900", price: 1490,
-    cover: { orderNo: "LA130.200", price: 390, label: "1.300 × 200 × 125 mm" },
-    strip: { orderNo: "LK130.004", price: 43,  label: "1.279 × 90 × 4 mm" } },
-  { label: "1.480 mm breit", width: 1480, orderNo: "HB150.900", price: 1590,
-    cover: { orderNo: "LA150.200", price: 490, label: "1.500 × 200 × 125 mm" },
-    strip: { orderNo: "LK150.004", price: 50,  label: "1.479 × 90 × 4 mm" } },
-];
-
 const ARRANGEMENTS = [
   { label: "Einzeltisch",                        second: false, dir: "end"  as const, bridge: false },
   { label: "2 Tische stirnseitig in Reihe",      second: true,  dir: "end"  as const, bridge: false },
@@ -169,11 +154,6 @@ export default function KonfiguratorTeaser() {
   const [feetIdx, setFeetIdx]     = useState(0);
   const [sheet, setSheet]         = useState(false); // Aluabdeckblech
   const [arrIdx, setArrIdx]       = useState(0);     // Aufstellung (1 oder 2 Tische)
-  // Produktzweig: Schweißtisch oder Hubbock (eigener Konfigurator)
-  const [mode, setMode]           = useState<"tisch" | "hubbock">("tisch");
-  const [hbIdx, setHbIdx]         = useState(0);
-  const [hbCover, setHbCover]     = useState(false);
-  const [hbStrip, setHbStrip]     = useState(false);
   const [qty, setQty]             = useState<Record<string, number>>({});
   const [accOpen, setAccOpen]     = useState(false);
 
@@ -203,14 +183,7 @@ export default function KonfiguratorTeaser() {
   const bridgeCount = arrangement.bridge ? 2 : 0;
   const perTable = tablePrice + feet.price + (sheet && sheetAvailable ? sheetPrice! : 0);
 
-  // Hubbock-Zweig
-  const hb = HUBBOCKS[hbIdx];
-  const hubbockTotal = hb.price + (hbCover ? hb.cover.price : 0) + (hbStrip ? hb.strip.price : 0);
-
-  const total =
-    mode === "hubbock"
-      ? hubbockTotal + accessoryTotal
-      : perTable * tableCount + bridgeCount * BRIDGE_PAIR_PRICE + accessoryTotal;
+  const total = perTable * tableCount + bridgeCount * BRIDGE_PAIR_PRICE + accessoryTotal;
 
   function setQuantity(id: string, next: number) {
     setQty((prev) => {
@@ -242,32 +215,15 @@ export default function KonfiguratorTeaser() {
       metalness:   0.65,
       roughness:   0.4,
       accentColor: "#b0b5ba",
-      second:            mode === "tisch" && arrangement.second,
+      second:            arrangement.second,
       secondArrangement: arrangement.dir,
-      bridge:            mode === "tisch" && arrangement.bridge,
-      product:           mode === "hubbock" ? "hubbock" : "table",
-      hubbockWidth:      hb.width,
-      hubbockCover:      hbCover,
-      hubbockStrip:      hbStrip,
+      bridge:            arrangement.bridge,
     }),
-    [size, series, feetIdx, sheet, sheetAvailable, arrangement, mode, hb, hbCover, hbStrip]
+    [size, series, feetIdx, sheet, sheetAvailable, arrangement]
   );
 
   // Stückliste (nur gewählte Positionen)
   const bom = useMemo(() => {
-    if (mode === "hubbock") {
-      const hbItems: { qty: number; name: string; orderNo: string; price: number }[] = [
-        { qty: 1, name: `Hubbock höhenverstellbar ${hb.label}`, orderNo: hb.orderNo, price: hb.price },
-      ];
-      if (hbCover) hbItems.push({ qty: 1, name: `Abdeckung Hubbock ${hb.cover.label}`, orderNo: hb.cover.orderNo, price: hb.cover.price });
-      if (hbStrip) hbItems.push({ qty: 1, name: `Schonleiste PE 1000 ${hb.strip.label}`, orderNo: hb.strip.orderNo, price: hb.strip.price });
-      for (const a of ACCESSORIES) {
-        const n = qty[a.id] ?? 0;
-        if (n > 0) hbItems.push({ qty: n, name: a.name, orderNo: a.orderNo, price: a.price * n });
-      }
-      return hbItems;
-    }
-
     const items: { qty: number; name: string; orderNo: string; price: number }[] = [
       { qty: tableCount, name: `Schweißtisch ${series.short} ${size.label}`, orderNo: tableOrder, price: tablePrice * tableCount },
     ];
@@ -280,7 +236,7 @@ export default function KonfiguratorTeaser() {
       if (n > 0) items.push({ qty: n, name: a.name, orderNo: a.orderNo, price: a.price * n });
     }
     return items;
-  }, [series, size, feet, sheet, sheetAvailable, sheetPrice, sheetOrder, tableOrder, tablePrice, qty, tableCount, bridgeCount, mode, hb, hbCover, hbStrip]);
+  }, [series, size, feet, sheet, sheetAvailable, sheetPrice, sheetOrder, tableOrder, tablePrice, qty, tableCount, bridgeCount]);
 
   async function handleAngebotSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -315,8 +271,6 @@ export default function KonfiguratorTeaser() {
   }
 
   // ─── Select-Schritte ───
-  // Der Hubbock ist ein eigenständiges Produkt und bekommt deshalb einen
-  // eigenen, kurzen Konfigurationspfad statt Tischgröße/Serie/Füße.
   type Step = {
     num: string;
     label: string;
@@ -325,36 +279,6 @@ export default function KonfiguratorTeaser() {
     onChange: (v: number) => void;
     disabledIdx?: number;
   };
-
-  const hubbockSteps: Step[] = [
-    {
-      num: "01",
-      label: "Baugröße",
-      value: hbIdx,
-      options: HUBBOCKS.map((h) => `${h.label} — ${euro(h.price)} €`),
-      onChange: (v: number) => setHbIdx(v),
-    },
-    {
-      num: "02",
-      label: "Abdeckung",
-      value: hbCover ? 1 : 0,
-      options: [
-        "Ohne Abdeckung",
-        `Abdeckung ${hb.cover.label} (${hb.cover.orderNo}) — +${euro(hb.cover.price)} €`,
-      ],
-      onChange: (v: number) => setHbCover(v === 1),
-    },
-    {
-      num: "03",
-      label: "Schonleiste",
-      value: hbStrip ? 1 : 0,
-      options: [
-        "Ohne Schonleiste",
-        `Schonleiste PE 1000 (${hb.strip.orderNo}) — +${euro(hb.strip.price)} €`,
-      ],
-      onChange: (v: number) => setHbStrip(v === 1),
-    },
-  ];
 
   const tableSteps: Step[] = [
     {
@@ -406,8 +330,8 @@ export default function KonfiguratorTeaser() {
     },
   ];
 
-  const steps = mode === "hubbock" ? hubbockSteps : tableSteps;
-  const accessoryStepNo = mode === "hubbock" ? "04" : "06";
+  const steps = tableSteps;
+  const accessoryStepNo = "06";
 
   return (
     <section id="konfigurator" className="bg-white px-6 md:px-10 py-16 md:py-24 lg:py-28 border-t border-carbon/10">
@@ -418,33 +342,11 @@ export default function KonfiguratorTeaser() {
             Konfigurator
           </p>
           <h2 className="text-carbon text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tightest mb-4">
-            In {mode === "hubbock" ? 4 : 6} Schritten zum Preis.
+            In 6 Schritten zum Preis.
           </h2>
-          <p className="text-carbon/60 text-base mb-6">
-            {mode === "hubbock"
-              ? "Stellen Sie Ihren Hubbock zusammen — höhenverstellbar 700–950 mm, Tragfähigkeit bis 2.000 kg."
-              : "Stellen Sie Ihren Wunschtisch komplett zusammen — mit den Originalpreisen der Produktseite."}
+          <p className="text-carbon/60 text-base mb-10">
+            Stellen Sie Ihren Wunschtisch komplett zusammen — mit den Originalpreisen der Produktseite.
           </p>
-
-          {/* Produktzweig: Schweißtisch oder Hubbock */}
-          <div className="flex gap-0 mb-10 border border-carbon/10 w-fit">
-            {([
-              ["tisch", "Schweißtisch konfigurieren"],
-              ["hubbock", "Hubbock konfigurieren"],
-            ] as const).map(([m, label]) => (
-              <button
-                key={m}
-                onClick={() => setMode(m)}
-                className={`px-5 py-2.5 text-sm font-mono transition-colors ${
-                  mode === m
-                    ? "bg-plasma text-white"
-                    : "bg-white text-carbon/70 hover:text-carbon"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
 
           {/* Schritte 01–05 */}
           <div className="flex flex-col gap-0 border border-carbon/10">
@@ -680,9 +582,7 @@ export default function KonfiguratorTeaser() {
             <ShowroomViewer config={config} />
           </div>
           <p className="text-carbon/60 text-xs text-center font-mono">
-            {mode === "hubbock"
-              ? "3D-Ansicht: Live-Vorschau — Baugröße, Abdeckung & Schonleiste folgen Ihrer Auswahl"
-              : "3D-Ansicht: Live-Vorschau — Größe, Füße/Rollen, Abdeckblech & Aufstellung folgen Ihrer Auswahl"}
+            3D-Ansicht: Live-Vorschau — Größe, Füße/Rollen, Abdeckblech &amp; Aufstellung folgen Ihrer Auswahl
           </p>
           {/* Haftungsausschluss zur 3D-Vorschau: hält fest, dass die Darstellung
               unverbindlich ist und die Auftragsbestätigung maßgeblich bleibt —

@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
-const CATEGORIES = ["Hubböcke", "Schweißtischbrücken", "Spannwerkzeug", "Anschläge & Winkel"] as const;
+const CATEGORIES = ["Schweißtischbrücken", "Spannwerkzeug", "Anschläge & Winkel"] as const;
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -78,7 +78,7 @@ export default function ZubehoerPage() {
           </div>
           <div className="w-full md:max-w-lg flex flex-col justify-end gap-6">
             <p className="text-carbon/60 text-base leading-relaxed">
-              Hubböcke, Schweißtischbrücken, Spannwerkzeug, Anschläge & Winkel — alles aus eigener Fertigung.
+              Schweißtischbrücken, Spannwerkzeug, Anschläge & Winkel — alles aus eigener Fertigung.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
@@ -117,68 +117,10 @@ export default function ZubehoerPage() {
         </div>
       </div>
 
-      {/* ── SECTION 1: Hubböcke ── */}
-      <section
-        id="hubböcke"
-        ref={(el) => { sectionRefs.current[0] = el; }}
-        className="bg-white px-6 md:px-10 py-16 md:py-24 lg:py-28 border-b border-carbon/10 scroll-mt-16"
-      >
-        <div className="max-w-7xl mx-auto">
-          <SectionLabel>Hubböcke</SectionLabel>
-          <h2 className="text-carbon text-3xl md:text-4xl font-bold tracking-tightest mb-3">
-            Hubböcke
-          </h2>
-          <p className="text-carbon/60 text-base leading-relaxed mb-10 max-w-2xl">
-            Höhenverstellbar von 700–950 mm. Selbsthemmendes Spindelsystem. Tragfähigkeit bis 2000 kg. Pulverbeschichtet RAL 5015.
-          </p>
-
-          <PriceTable
-            cols={["Bezeichnung", "Bestellnummer", "Preis netto", "inkl. 19% MwSt."]}
-            rows={[
-              { col1: "Hubbock 1080 mm breit stufenlos verstellbar", col2: "HB110.900", netto: "1.390,00 €", brutto: "1.654,10 €" },
-              { col1: "Hubbock 1280 mm breit stufenlos verstellbar", col2: "HB130.900", netto: "1.490,00 €", brutto: "1.773,10 €" },
-              { col1: "Hubbock 1480 mm breit stufenlos verstellbar", col2: "HB150.900", netto: "1.590,00 €", brutto: "1.892,10 €" },
-            ]}
-          />
-
-          {/* Abdeckungen */}
-          <div className="mt-12">
-            <h3 className="text-carbon text-xl font-bold tracking-tightest mb-2">Abdeckungen für Hubböcke</h3>
-            <p className="text-carbon/60 text-sm leading-relaxed mb-6">
-              15 mm S355 Stahl, 28 mm Lochsystem, festverschraubbar.
-            </p>
-            <PriceTable
-              cols={["Bezeichnung", "Bestellnummer", "Preis netto", "inkl. 19% MwSt."]}
-              rows={[
-                { col1: "Abdeckung Hubbock 1100×200×125 mm", col2: "LA110.200", netto: "290,00 €", brutto: "345,10 €" },
-                { col1: "Abdeckung Hubbock 1300×200×125 mm", col2: "LA130.200", netto: "390,00 €", brutto: "464,10 €" },
-                { col1: "Abdeckung Hubbock 1500×200×125 mm", col2: "LA150.200", netto: "490,00 €", brutto: "583,10 €" },
-              ]}
-            />
-          </div>
-
-          {/* Schonleisten */}
-          <div className="mt-12">
-            <h3 className="text-carbon text-xl font-bold tracking-tightest mb-2">Schonleisten PE 1000</h3>
-            <p className="text-carbon/60 text-sm leading-relaxed mb-6">
-              Kunststoff PE 1000 für Hubböcke, schützt empfindliche Oberflächen.
-            </p>
-            <PriceTable
-              cols={["Bezeichnung", "Bestellnummer", "Preis netto", "inkl. 19% MwSt."]}
-              rows={[
-                { col1: "Schonleiste PE 1000  1079×90×4 mm", col2: "LK110.004", netto: "36,00 €", brutto: "42,84 €" },
-                { col1: "Schonleiste PE 1000  1279×90×4 mm", col2: "LK130.004", netto: "43,00 €", brutto: "51,17 €" },
-                { col1: "Schonleiste PE 1000  1479×90×4 mm", col2: "LK150.004", netto: "50,00 €", brutto: "59,50 €" },
-              ]}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 2: Schweißtischbrücken ── */}
+      {/* ── SECTION 1: Schweißtischbrücken ── */}
       <section
         id="brücken"
-        ref={(el) => { sectionRefs.current[1] = el; }}
+        ref={(el) => { sectionRefs.current[0] = el; }}
         className="bg-white px-6 md:px-10 py-16 md:py-24 lg:py-28 border-b border-carbon/10 scroll-mt-16"
       >
         <div className="max-w-7xl mx-auto">
@@ -219,10 +161,10 @@ export default function ZubehoerPage() {
         </div>
       </section>
 
-      {/* ── SECTION 3: Spannwerkzeug ── */}
+      {/* ── SECTION 2: Spannwerkzeug ── */}
       <section
         id="spannwerkzeug"
-        ref={(el) => { sectionRefs.current[2] = el; }}
+        ref={(el) => { sectionRefs.current[1] = el; }}
         className="bg-white px-6 md:px-10 py-16 md:py-24 lg:py-28 border-b border-carbon/10 scroll-mt-16"
       >
         <div className="max-w-7xl mx-auto">
@@ -363,10 +305,10 @@ export default function ZubehoerPage() {
         </div>
       </section>
 
-      {/* ── SECTION 4: Anschläge & Winkel ── */}
+      {/* ── SECTION 3: Anschläge & Winkel ── */}
       <section
         id="anschlaege"
-        ref={(el) => { sectionRefs.current[3] = el; }}
+        ref={(el) => { sectionRefs.current[2] = el; }}
         className="bg-white px-6 md:px-10 py-16 md:py-24 lg:py-28 scroll-mt-16"
       >
         <div className="max-w-7xl mx-auto">

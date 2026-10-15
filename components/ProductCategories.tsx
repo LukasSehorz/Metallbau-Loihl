@@ -17,16 +17,16 @@ const categories = [
   {
     title: "Spanntische",
     description: "Flexible Spannlösungen für komplexe Werkstückgeometrien. Kompatibel mit dem universellen Zubehörsystem.",
-    href: "/produkte#schweisstische",
+    href: "/spanntische",
     img: "/images/Produkt-Bilder/Spann- und Schweißtisch.png",
     imgAlt: "Spann- und Schweißtisch Loihl",
   },
   {
     title: "Zubehör & Spannelemente",
-    description: "Bolzen, Anschläge, Winkel und Aufsätze — hochwertiges Zubehör für alle Tischmodelle aus dem Hause Loihl.",
+    description: "Bolzen, Schraubzwingen, Anschläge und Winkel — hochwertiges Zubehör für alle Tischmodelle aus dem Hause Loihl.",
     href: "/produkte#zubehoer",
-    img: "/images/prod-zubehoer-1.png",
-    imgAlt: "Zubehör und Spannelemente Loihl",
+    img: "/images/prod-zubehoer-bolzen-zwingen.jpg",
+    imgAlt: "Schnellspann-Kugelbolzen, Schraubzwingen und Anschläge auf einem Loihl-Schweißtisch",
   },
 ];
 

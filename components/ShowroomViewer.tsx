@@ -21,14 +21,6 @@ export type ShowroomConfig = {
   secondArrangement?: "side" | "end";
   /** Beide Tische mit Schweißtischbrücken verbinden (erzeugt die mittige Öffnung) */
   bridge?: boolean;
-  /** Produktzweig: Schweißtisch oder Hubbock */
-  product?: "table" | "hubbock";
-  /** Hubbock-Breite über alles: 1080 | 1280 | 1480 mm */
-  hubbockWidth?: number;
-  /** Abdeckung (S355, 28-mm-Lochsystem) auf dem Hubbock — +25 mm Höhe */
-  hubbockCover?: boolean;
-  /** Schonleiste PE 1000 obenauf */
-  hubbockStrip?: boolean;
 };
 
 /*
@@ -887,161 +879,6 @@ function buildBridge(len: number, mats: ReturnType<typeof makeMaterials>): THREE
   return g;
 }
 
-// ── Hubbock (HB…900) ───────────────────────────────────────────
-// Nachbau des realen Unterstellbocks: durchgehender Kastenträger oben,
-// zwei konische Säulen, quer liegende Fußplatten, unten ein Längsbalken mit
-// vier schrägen Auslegern für die Blickle-Kugellagerrollen.
-// Die drei Baugrößen unterscheiden sich NUR in der Mitte — Säulen, Füße und
-// Rollen bleiben identisch ("außen schaut er komplett gleich aus").
-const HB_H = 700;          // Höhe abgesenkt (verstellbar 700–950 mm)
-const HB_BEAM_H = 130;     // Kastenträger oben
-const HB_BEAM_D = 110;     // Trägertiefe
-const HB_COL = 105;        // Säulenquerschnitt
-const HB_END = 150;        // Säulenmitte vom Trägerende
-const HB_FOOT_L = 620;     // Fußplatte quer zum Träger
-const HB_FOOT_H = 70;
-
-function buildHubbock(cfg: ShowroomConfig, mats: ReturnType<typeof makeMaterials>): THREE.Group {
-  const g = new THREE.Group();
-  const { legMat, legFlatMat, boltMat, wheelMat, forkMat, steel, midSteel, peMat } = mats;
-  const w = cfg.hubbockWidth ?? 1080;
-  const SQ = Math.SQRT1_2;
-
-  const beamY = HB_H - HB_BEAM_H / 2;
-  const colX = w / 2 - HB_END;
-
-  // Kastenträger oben — das ist das Bauteil, das mit der Baugröße wächst
-  const beam = new THREE.Mesh(new THREE.BoxGeometry(w, HB_BEAM_H, HB_BEAM_D), legMat);
-  beam.position.set(0, beamY, 0);
-  g.add(beam);
-
-  // Spindelzapfen (Sechskant) an der Stirnseite — selbsthemmendes Spindelsystem
-  const spindle = new THREE.Mesh(new THREE.CylinderGeometry(26, 26, 90, 6), legMat);
-  spindle.rotation.z = Math.PI / 2;
-  spindle.position.set(w / 2 + 45, beamY - 18, 0);
-  g.add(spindle);
-  const spindleTip = new THREE.Mesh(new THREE.CylinderGeometry(17, 17, 40, 6), boltMat);
-  spindleTip.rotation.z = Math.PI / 2;
-  spindleTip.position.set(w / 2 + 105, beamY - 18, 0);
-  g.add(spindleTip);
-
-  const colH = HB_H - HB_BEAM_H - HB_FOOT_H;
-  for (const sx of [-1, 1]) {
-    // Säule — leicht konisch, wie am realen Bock
-    const col = new THREE.Mesh(
-      new THREE.CylinderGeometry(HB_COL * SQ, (HB_COL - 14) * SQ, colH, 4, 1),
-      legFlatMat
-    );
-    col.rotation.y = Math.PI / 4;
-    col.position.set(sx * colX, HB_FOOT_H + colH / 2, 0);
-    g.add(col);
-
-    // Fußplatte quer zum Träger
-    const foot = new THREE.Mesh(new THREE.BoxGeometry(150, HB_FOOT_H, HB_FOOT_L), legMat);
-    foot.position.set(sx * colX, HB_FOOT_H / 2, 0);
-    g.add(foot);
-
-    // Verschraubung Säule/Fußplatte
-    for (const dz of [-46, 46]) {
-      const bolt = new THREE.Mesh(new THREE.CylinderGeometry(9, 9, 10, 6), boltMat);
-      bolt.rotation.x = Math.PI / 2;
-      bolt.position.set(sx * colX, HB_FOOT_H + 42, dz + (dz > 0 ? 56 : -56));
-      g.add(bolt);
-    }
-  }
-
-  // Längsbalken unten zwischen den Säulen
-  const spine = new THREE.Mesh(new THREE.BoxGeometry(2 * colX, 95, 95), legMat);
-  spine.position.set(0, HB_FOOT_H + 165, 0);
-  g.add(spine);
-
-  // Vier Rollen (2 vorne, 2 hinten) an Auslegern, die vom Längsbalken
-  // nach außen zu den Rollenkonsolen führen
-  const CASTER_R = 62;
-  const armY = HB_FOOT_H + 120;
-  for (const sx of [-1, 1])
-    for (const sz of [-1, 1]) {
-      const ax = sx * (colX - 165);
-      const az = sz * 230;
-
-      // Ausleger quer vom Längsbalken zur Rolle
-      const arm = new THREE.Mesh(new THREE.BoxGeometry(80, 30, Math.abs(az) + 40), legMat);
-      arm.position.set(ax, armY, az / 2);
-      g.add(arm);
-      // Schräge Konsole vom Ausleger hinunter zur Rollenplatte
-      const stay = new THREE.Mesh(new THREE.BoxGeometry(70, 22, 120), legMat);
-      stay.position.set(ax, armY - 32, az - sz * 30);
-      stay.rotation.x = sz * 0.55;
-      g.add(stay);
-
-      // Rollenkonsole
-      const bracket = new THREE.Mesh(new THREE.BoxGeometry(118, 16, 118), legMat);
-      bracket.position.set(ax, 2 * CASTER_R + 46, az);
-      g.add(bracket);
-
-      const swivel = new THREE.Mesh(new THREE.CylinderGeometry(34, 34, 20, 20), forkMat);
-      swivel.position.set(ax, 2 * CASTER_R + 28, az);
-      g.add(swivel);
-      for (const side of [-1, 1]) {
-        const fork = new THREE.Mesh(new THREE.BoxGeometry(11, 76, 76), forkMat);
-        fork.position.set(ax + side * 36, CASTER_R + 34, az);
-        g.add(fork);
-      }
-      const wheel = new THREE.Mesh(
-        new THREE.CylinderGeometry(CASTER_R, CASTER_R, 44, 28),
-        wheelMat
-      );
-      wheel.rotation.z = Math.PI / 2;
-      wheel.position.set(ax, CASTER_R + 8, az); // leicht angehoben: steht auf den Füßen
-      g.add(wheel);
-      const hub = new THREE.Mesh(new THREE.CylinderGeometry(20, 20, 50, 16), forkMat);
-      hub.rotation.z = Math.PI / 2;
-      hub.position.set(ax, CASTER_R + 8, az);
-      g.add(hub);
-    }
-
-  // Abdeckung: gelochter S355-Balken (200 × 125 mm), festverschraubbar.
-  // Sie greift wie eine Haube über den Träger — die Bauhöhe steigt nur um
-  // 25 mm, genau wie im Katalog angegeben.
-  let topY = HB_H;
-  if (cfg.hubbockCover) {
-    const cLen = w + 20;      // Länge über alles
-    const cDepth = 200;       // Breite laut Katalog
-    const cH = 125;           // Bauhöhe der Haube
-    const cT = 15;            // Blechstärke (S355, 15 mm)
-    const cTopY = HB_H + 25;  // Oberkante — Bauhöhe steigt um 25 mm
-
-    // Deckplatte mit dem 28-mm-Lochsystem
-    const topGeo = perforatedPlateGeometry(cLen, cDepth, cT, true);
-    topGeo.rotateX(-Math.PI / 2);
-    const coverTop = new THREE.Mesh(topGeo, [steel, midSteel]);
-    coverTop.position.set(0, cTopY - cT, 0);
-    g.add(coverTop);
-
-    // Die beiden LANGEN Seiten sind ebenfalls gelocht — die Haube ist von
-    // oben und seitlich bestückbar, nicht nur auf der Deckfläche.
-    const sideH = cH - cT;
-    for (const sz of [-1, 1]) {
-      const geo = ribGeometry(cLen, sideH, cT);
-      geo.translate(0, 0, -cT / 2);
-      const side = new THREE.Mesh(geo, [steel, midSteel]);
-      side.position.set(0, cTopY - cT - sideH / 2, sz * (cDepth / 2 - cT / 2));
-      g.add(side);
-    }
-    topY = cTopY;
-  }
-
-  // Schonleiste PE 1000 — schützt empfindliche Oberflächen
-  if (cfg.hubbockStrip) {
-    const strip = new THREE.Mesh(new THREE.BoxGeometry(w - 2, 4, 90), peMat);
-    strip.position.set(0, topY + 2, 0);
-    g.add(strip);
-  }
-
-  g.position.y = -HB_H / 2;
-  return g;
-}
-
 // ── Materialien ────────────────────────────────────────────────
 function makeMaterials(cfg: ShowroomConfig) {
   return {
@@ -1121,18 +958,12 @@ function makeMaterials(cfg: ShowroomConfig) {
       metalness: 0.9,
       roughness: 0.35,
     }),
-    // Hellere Lochwände für dicke Bauteile (Hubbock-Abdeckung, Brücken) —
+    // Hellere Lochwände für dicke Bauteile (Brücken) —
     // darkSteel würde sie fast schwarz erscheinen lassen
     midSteel: new THREE.MeshStandardMaterial({
       color: 0xa2a8ae,
       metalness: 0.5,
       roughness: 0.5,
-    }),
-    // Schonleiste PE 1000 — mattes Kunststoffschwarz
-    peMat: new THREE.MeshStandardMaterial({
-      color: 0x2c2f33,
-      metalness: 0.05,
-      roughness: 0.85,
     }),
   };
 }
@@ -1143,9 +974,7 @@ function buildScene(cfg: ShowroomConfig): THREE.Group {
   const mats = makeMaterials(cfg);
   const { width: w, length: l } = cfg;
 
-  if (cfg.product === "hubbock") {
-    g.add(buildHubbock(cfg, mats));
-  } else if (!cfg.second) {
+  if (!cfg.second) {
     g.add(buildTable(cfg, mats));
   } else {
     // "end" = in Längsrichtung hintereinander, "side" = an der Längsseite
@@ -1185,9 +1014,8 @@ function buildScene(cfg: ShowroomConfig): THREE.Group {
     }
   });
 
-  // Vertikal zentrieren (Drehpunkt = Bauteilmitte). Der Hubbock bringt seine
-  // eigene Zentrierung mit, weil er niedriger ist als ein Tisch.
-  if (cfg.product !== "hubbock") g.position.y = -TABLE_H / 2;
+  // Vertikal zentrieren (Drehpunkt = Bauteilmitte)
+  g.position.y = -TABLE_H / 2;
 
   const wrapper = new THREE.Group();
   wrapper.add(g);
@@ -1224,10 +1052,6 @@ function TableModel({
       config.second,
       config.secondArrangement,
       config.bridge,
-      config.product,
-      config.hubbockWidth,
-      config.hubbockCover,
-      config.hubbockStrip,
     ]
   );
 
@@ -1246,20 +1070,16 @@ function TableModel({
   }, [built]);
 
   // Maßstab: mm → Szenen-Einheiten über die echte Bounding-Box.
-  // Doppeltisch-Aufstellungen sind flacher und dürfen das Bild breiter füllen,
-  // der Hubbock ist deutlich kleiner und bekommt einen eigenen Zielwert.
+  // Doppeltisch-Aufstellungen sind flacher und dürfen das Bild breiter füllen.
   const maxDim = Math.max(config.width, config.length);
   const s = useMemo(() => {
     const box = new THREE.Box3().setFromObject(built);
     const size = new THREE.Vector3();
     box.getSize(size);
     const horiz = Math.max(size.x, size.z, 1);
-    const target =
-      config.product === "hubbock"
-        ? 5.6
-        : sceneUnits(maxDim) * (config.second ? 1.32 : 1);
+    const target = sceneUnits(maxDim) * (config.second ? 1.32 : 1);
     return target / horiz;
-  }, [built, maxDim, config.product, config.second]);
+  }, [built, maxDim, config.second]);
 
   // ── Eingang beim Mount, danach weiche Skalierung bei Größenwechsel ──
   const mounted = useRef(false);

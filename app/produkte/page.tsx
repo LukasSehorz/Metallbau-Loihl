@@ -69,24 +69,6 @@ const AD_ROWS: PRow[] = [
   { a: "1000×1000×2", b: "AD100.100", netto: "250,00 €", brutto: "297,50 €" },
 ];
 
-const HB_ROWS: PRow[] = [
-  { a: "1080 mm Breite", b: "HB110.900", netto: "1.390,00 €", brutto: "1.654,10 €" },
-  { a: "1280 mm Breite", b: "HB130.900", netto: "1.490,00 €", brutto: "1.773,10 €" },
-  { a: "1480 mm Breite", b: "HB150.900", netto: "1.590,00 €", brutto: "1.892,10 €" },
-];
-
-const HB_ABD_ROWS: PRow[] = [
-  { a: "1100×200×125 mm", b: "LA110.200", netto: "290,00 €", brutto: "345,10 €" },
-  { a: "1300×200×125 mm", b: "LA130.200", netto: "390,00 €", brutto: "464,10 €" },
-  { a: "1500×200×125 mm", b: "LA150.200", netto: "490,00 €", brutto: "583,10 €" },
-];
-
-const HB_SCH_ROWS: PRow[] = [
-  { a: "1079×90×4 mm", b: "LK110.004", netto: "36,00 €", brutto: "42,84 €" },
-  { a: "1279×90×4 mm", b: "LK130.004", netto: "43,00 €", brutto: "51,17 €" },
-  { a: "1479×90×4 mm", b: "LK150.004", netto: "50,00 €", brutto: "59,50 €" },
-];
-
 const SB_ROWS: PRow[] = [
   { a: "500×300×200",  b: "SB500.300",  netto: "450,00 €",   brutto: "535,50 €" },
   { a: "600×300×200",  b: "SB600.300",  netto: "490,00 €",   brutto: "583,10 €" },
@@ -510,7 +492,6 @@ const NAV_ITEMS = [
   "Schweißtische",
   "Füße & Rollen",
   "Alubleche",
-  "Hubböcke",
   "Brücken",
   "Spannwerkzeug",
   "Anschläge & Winkel",
@@ -903,69 +884,15 @@ export default function ProduktePage() {
             </div>
           </div>
           <p className="zubehoer-right text-white/40 text-sm md:ml-8 max-w-lg">
-            Hubböcke, Brücken, Spannwerkzeug, Anschläge & Winkel — alles kompatibel mit dem Ø 28 mm
+            Brücken, Spannwerkzeug, Anschläge & Winkel — alles kompatibel mit dem Ø 28 mm
             Lochsystem.
           </p>
         </div>
       </div>
 
-      {/* ── 3: Hubböcke ── */}
+      {/* ── 3: Brücken ── */}
       <section
         ref={(el) => { sectionRefs.current[3] = el; }}
-        className="bg-white px-6 md:px-10 py-16 md:py-24 scroll-mt-16"
-      >
-        <div className="max-w-7xl mx-auto">
-          <SectionLabel>Zubehör · Hubböcke</SectionLabel>
-          <h2 className="sec-h2 text-carbon text-3xl md:text-4xl font-bold tracking-tightest mb-3">
-            Hubböcke
-          </h2>
-          <p className="sec-p text-carbon/60 text-base leading-relaxed mb-10 max-w-2xl">
-            Höhenverstellbar 700–950 mm. Selbsthemmendes Spindelsystem. Tragfähigkeit bis 2000 kg.
-            4×360° drehbare Blickle-Kugellagerrollen. Komplett montiert. RAL 5015.
-          </p>
-          <div className="products-grid grid grid-cols-1 md:grid-cols-3 gap-6">
-            <ProductCard
-              img="/images/product-hubbock.jpg"
-              label="Hubbock"
-              name="Hubbock höhenverstellbar"
-              desc="3 Breiten: 1080 / 1280 / 1480 mm. Stufenlos verstellbar 700–950 mm. Selbsthemmend."
-              rows={HB_ROWS}
-              accordionId="hb"
-              isOpen={isOpen("hb")}
-              onToggle={toggle}
-              cta={DefaultCTA}
-            />
-            <ProductCard
-              img="/images/product-hubbock-abdeckung.jpg"
-              label="Hubbock Zubehör"
-              name="Abdeckungen"
-              desc="15 mm S355 Stahl · Ø 28 mm Lochsystem · festverschraubbar. Passend zu allen Hubbock-Breiten."
-              rows={HB_ABD_ROWS}
-              accordionId="hb-abd"
-              isOpen={isOpen("hb-abd")}
-              onToggle={toggle}
-              cta={DefaultCTA}
-            />
-            <ProductCard
-              img="/images/product-schonleiste.jpg"
-              label="Hubbock Zubehör"
-              name="Schonleisten PE 1000"
-              desc="Kunststoff PE 1000 · schützt empfindliche Oberflächen. 3 Längen passend zu den Hubbock-Breiten."
-              rows={HB_SCH_ROWS}
-              accordionId="hb-sch"
-              isOpen={isOpen("hb-sch")}
-              onToggle={toggle}
-              cta={DefaultCTA}
-            />
-          </div>
-        </div>
-      </section>
-
-      <Divider />
-
-      {/* ── 4: Brücken ── */}
-      <section
-        ref={(el) => { sectionRefs.current[4] = el; }}
         className="bg-white px-6 md:px-10 py-16 md:py-24 scroll-mt-16"
       >
         <div className="max-w-7xl mx-auto">
@@ -1006,9 +933,9 @@ export default function ProduktePage() {
 
       <Divider />
 
-      {/* ── 5: Spannwerkzeug ── */}
+      {/* ── 4: Spannwerkzeug ── */}
       <section
-        ref={(el) => { sectionRefs.current[5] = el; }}
+        ref={(el) => { sectionRefs.current[4] = el; }}
         className="bg-white px-6 md:px-10 py-16 md:py-24 scroll-mt-16"
       >
         <div className="max-w-7xl mx-auto">
@@ -1067,9 +994,9 @@ export default function ProduktePage() {
 
       <Divider />
 
-      {/* ── 6: Anschläge & Winkel ── */}
+      {/* ── 5: Anschläge & Winkel ── */}
       <section
-        ref={(el) => { sectionRefs.current[6] = el; }}
+        ref={(el) => { sectionRefs.current[5] = el; }}
         className="bg-white px-6 md:px-10 py-16 md:py-24 scroll-mt-16"
       >
         <div className="max-w-7xl mx-auto">
@@ -1131,9 +1058,9 @@ export default function ProduktePage() {
 
       <Divider />
 
-      {/* ── 7: Versand ── */}
+      {/* ── 6: Versand ── */}
       <section
-        ref={(el) => { sectionRefs.current[7] = el; }}
+        ref={(el) => { sectionRefs.current[6] = el; }}
         className="versand-section bg-white px-6 md:px-10 py-16 md:py-24 scroll-mt-16"
       >
         <div className="max-w-7xl mx-auto">

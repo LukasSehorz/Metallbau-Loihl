@@ -11,8 +11,6 @@ const navLinks = [
 
 const companyLinks = [
 { label: "Über uns", href: "/ueber-uns" },
-  { label: "Referenzen", href: "/referenzen" },
-  { label: "Wissen", href: "/wissen" },
   { label: "Kontakt", href: "/kontakt" },
   { label: "Impressum", href: "/impressum" },
   { label: "Datenschutz", href: "/datenschutz" },
